@@ -62,45 +62,29 @@ func (t *Tokenizer) tryTokenizeOther() Token {
 }
 
 func (t *Tokenizer) TokenizeSingle() (Token, error) {
-	t.skipWhitespace()
 	var otherToken Token
+	t.skipWhitespace()
 
 	if t.inputPos >= len(t.input) {
 		return nil, nil
 	} else if otherToken = t.tryTokenizeOther(); otherToken != nil {
 		return otherToken, nil
 	} else {
-		return nil, fmt.Errorf("invalid character %c at position %d", t.input[t.inputPos], t.inputPos)
+		return nil, (NewTokenizerError(fmt.Sprintf("invalid character %c at position %d\n", t.input[t.inputPos], t.inputPos)))
 	}
 
 }
 
 func (t *Tokenizer) Tokenize() []Token {
 	tokens := []Token{}
-	var current Token
 
-	// second returned value is an error
-	for current, _ = t.TokenizeSingle(); current != nil; current, _ = t.TokenizeSingle() {
+	for t.inputPos < len(t.input) {
+		current, err := t.TokenizeSingle()
+		if err != nil {
+			panic(err)
+		}
 		tokens = append(tokens, current)
 	}
 
 	return tokens
 }
-
-// func (t *Tokenizer) Tokenize() []Token {
-
-// 	tokens := []Token{}
-
-// 	if strings.HasPrefix(string(t.input[t.inputPos:]), "true") {
-// 		tokens = append(tokens, &TrueToken{})
-// 		t.inputPos += 4
-// 	} else if strings.HasPrefix(string(t.input[t.inputPos:]), "false") {
-// 		tokens = append(tokens, &FalseToken{})
-// 		t.inputPos += 5
-// 	} else {
-// 		err := fmt.Errorf("token error: \"%s\" is not a valid token", t.input[t.inputPos:])
-// 		panic(err)
-// 	}
-
-// 	return tokens
-// }
