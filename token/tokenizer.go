@@ -21,6 +21,7 @@ func NewTokenizer(input string) *Tokenizer {
 		")":     &RightParenToken{},
 		"{":     &LeftCurlyToken{},
 		"}":     &RightCurlyToken{},
+		"else":  &ElseToken{},
 	}
 
 	return &Tokenizer{

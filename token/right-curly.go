@@ -14,5 +14,5 @@ func (rct *RightCurlyToken) HashCode() int {
 }
 
 func (rct *RightCurlyToken) String() string {
-	return "{"
+	return "}"
 }
