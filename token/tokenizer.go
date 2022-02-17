@@ -70,13 +70,17 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 	} else if otherToken = t.tryTokenizeOther(); otherToken != nil {
 		return otherToken, nil
 	} else {
-		return nil, (NewTokenizerError(fmt.Sprintf("invalid character %c at position %d\n", t.input[t.inputPos], t.inputPos)))
+		return nil, (NewTokenizerError(fmt.Sprintf(("invalid character %c at position %d"), t.input[t.inputPos], t.inputPos)))
 	}
 
 }
 
 func (t *Tokenizer) Tokenize() []Token {
+
 	tokens := []Token{}
+
+	// will print an error in nicer way if it panics
+	defer handleTokenizerError()
 
 	for t.inputPos < len(t.input) {
 		current, err := t.TokenizeSingle()
