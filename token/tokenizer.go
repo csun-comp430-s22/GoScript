@@ -2,6 +2,7 @@ package token
 
 import (
 	"fmt"
+	"strconv"
 	"unicode"
 )
 
@@ -37,6 +38,27 @@ func (t *Tokenizer) IsTokenString(input string) bool {
 	return ok
 }
 
+func (t *Tokenizer) tryTokenizerNumber() *NumberToken {
+	var initialInputPos int = t.inputPos
+	var digits string = ""
+
+	for t.inputPos < len(t.input) && unicode.IsDigit(rune(t.input[t.inputPos])) {
+		digits += string(t.input[t.inputPos])
+		t.inputPos++
+	}
+
+	if len(digits) > 0 {
+		num, err := strconv.Atoi(digits)
+		if err != nil {
+			panic(err)
+		}
+		return &NumberToken{num}
+	} else {
+		t.inputPos = initialInputPos
+		return nil
+	}
+}
+
 func (t *Tokenizer) skipWhitespace() {
 	for t.inputPos < len(t.input) && unicode.IsSpace(rune(t.input[t.inputPos])) {
 		t.inputPos++
@@ -66,10 +88,13 @@ func (t *Tokenizer) tryTokenizeOther() Token {
 
 func (t *Tokenizer) TokenizeSingle() (Token, error) {
 	var otherToken Token
+	var num *NumberToken
 	t.skipWhitespace()
 
 	if t.inputPos >= len(t.input) {
 		return nil, nil
+	} else if num = t.tryTokenizerNumber(); num != nil {
+		return num, nil
 	} else if otherToken = t.tryTokenizeOther(); otherToken != nil {
 		return otherToken, nil
 	} else {

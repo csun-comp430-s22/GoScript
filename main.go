@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	tokenizer := token.NewTokenizer("true false if ( ) { } else")
+	tokenizer := token.NewTokenizer("true false if ( ) { } else 100")
 	tokens := tokenizer.Tokenize()
 
 	for _, t := range tokens {
