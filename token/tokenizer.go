@@ -38,7 +38,7 @@ func (t *Tokenizer) IsTokenString(input string) bool {
 	return ok
 }
 
-func (t *Tokenizer) tryTokenizerNumber() *NumberToken {
+func (t *Tokenizer) tryTokenizeNumber() *NumberToken {
 	var initialInputPos int = t.inputPos
 	var digits string = ""
 
@@ -93,7 +93,7 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 
 	if t.inputPos >= len(t.input) {
 		return nil, nil
-	} else if num = t.tryTokenizerNumber(); num != nil {
+	} else if num = t.tryTokenizeNumber(); num != nil {
 		return num, nil
 	} else if otherToken = t.tryTokenizeOther(); otherToken != nil {
 		return otherToken, nil
