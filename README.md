@@ -1,5 +1,9 @@
 # GoScript
-
+The goal of this project is to design a language and subsequently implement a complete compiler for this language.
+This language will be defined in Backus-Naur Form(BNF) which will also include tokens as well as concrete and abstract syntax.
+Our language will also be Statically Typed, meaning it will reject ill-typed programs.
+GoScript will have subprograms to evaluate expressions as well as subprogramming for other features that will be listed below.
+It will have control structures which will allow for the code to be conditionally executed as well as the ability for entire computations to be abstracted over.
 ## Language Name: 
 GoScript
 
