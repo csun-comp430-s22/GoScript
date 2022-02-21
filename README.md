@@ -19,71 +19,73 @@ Go-lang. Our team member Vladimir has experience with golang and the rest of our
 Javascript
 
 ## Language Description:  
-has Go-lang like syntax (https://go.dev/) with some features inspired by Swift (https://developer.apple.com/swift/) and Elixir (https://elixir-lang.org/). Like Go, it has structs and a static typing system. Language includes operator overloading similar to one in Swift and pipe operator identical to Elixir’s.
+has Go-lang like syntax (https://go.dev/) with some features inspired by Elixir (https://elixir-lang.org/). Like Go, it has static typing system and like Elixir, it has pipe operators identical to Elixir’s.
 
 ## Abstract Syntax: 
-varname is name of variable
+variablename is a variable
 
-funcname is  name of function
+fn is a function
 
-structname is name of struct
+Str is a string
 
-type ::= Int | Float | Bool | Str | Null | type[] | Map[type]type | structname
+Float is a float
 
-operator ::= + | - | * | / | ^ | % | |> ”|>” is defined below as expression operator expression
+Null is null
 
-expression ::= number | variable | expression operator expression 
+type[] is an array of type
 
-| type[] | expression[expression]  array at index
+type ::= Int | Float | Bool | Str | Null | type[]
 
-| len(expression)  length
+operator ::= + | - | * | / | ^ | % | |> <span style="color:red">”|>” is defined below as expression |> expression</span>
 
-| array-declaration 
+var-declaration ::= (const | var) (type | “”) variablename = expression<span style="color:red"> type | “” means can define variable without telling its type, for example var x = 1 or var x int = 1 should mean same thing</span>
 
-| map-declaration 
-
-| print(expression)
-
-statement ::= var-declaration 
-
------| expression[expression] = expression 
-
------| if (expression) stmt else stmt if statement
-	
------| for-loop declaration ::= for ( <expression> ; <expression>; <expression> ) <statement> for loops
-	
-
-var-declaration ::= (const | var) (type | “”) varname = expression type | “” means can define variable without telling its type, for example var x = 1 or var x int = 1 should mean same thing
-
-array-declaration ::= [ expression* ]
-
-map-declaration ::= { (expression: expression)* }
-
-struct-definition ::= struct structname {
-
-variable-declaration
-
-// need to add function declaration too
-
-}
-	
-array-declaration ::= (var | const) arrayname = [ | expression] 
-
------|  (var | const) []arrayname = [expression] expressions are comma-separated
-       
-function-def ::= fn funcname(varname type){ statement } var-declarations are comma-separated
+array-declaration ::= (var | const) arrayname = type[ | expression*]  <span style="color:red">expressions are comma-separated</span>
 
 
+expression ::= int | str | variablename  | expression `|>` expression
+
+<div style="margin-left:92px">
+| expression[expression]  <span style="color:red">array at index</span>
+
+| len(expression)  <span style="color:red">length of expression</span>
+
+| type[ | expression*]  <span style="color:red">declaration of an array of type</span>
+
+| print(expression) <span style="color:red"> prints something</span>
+</div>
+
+statement ::= var-declaration  variable declaration
+
+<div style="margin-left:92px">
+| expression[expression] = expression 
+
+| {statement*} <span style="color:red">block<span>
+
+| function-call <span style="color:red">calls a function</span>
+
+| if (expression) statement else statement <span style="color:red">if statement</span>
+
+| for-loop declaration ::= for ( expression ; expression; expression ) {statement*} <span style="color:red">for loops</span>
+
+| return expression <span style="color:red">returns an expression</span>
+</div>
+
+function-definition ::= fn funcname(paramname type){ statement* } <span style="color:red">var-declarations are comma-separated</span>
+
+function-call ::= funcname( | param*)  <span style="color:red">params are comma seperated</span>
+
+Program ::= function-definition*
 
 ## Computational Abstraction Non-Trivial Feature: 
-Operator Overloading
+Higher Order Functions
 
 ## Non-Trivial Feature #2: 
-Static Typing System(As seen in Java, C, C++) https://stackoverflow.com/a/1517670
+ Mutable/Immutable variables
 
 ## Non-Trivial Feature #3: 
 Pipe Operators
 https://elixirschool.com/en/lessons/basics/pipe_operator 
 
 ## Work Planned for Custom Component:  
-Operator Overloading
+Pipe Operators
