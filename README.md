@@ -36,44 +36,40 @@ type[] is an array of type
 
 type ::= Int | Float | Bool | Str | Null | type[]
 
-operator ::= + | - | * | / | ^ | % | |> <span style="color:red">”|>” is defined below as expression |> expression</span>
+operator ::= + | - | * | / | ^ | % | |>  `”|>” is defined below as expression |> expression`
 
-var-declaration ::= (const | var) (type | “”) variablename = expression<span style="color:red"> type | “” means can define variable without telling its type, for example var x = 1 or var x int = 1 should mean same thing</span>
+var-declaration ::= (const | var) (type | “”) variablename = expression `type | “” means can define variable without telling its type, for example var x = 1 or var x int = 1 should mean same thing`
 
-array-declaration ::= (var | const) arrayname = type[ | expression*]  <span style="color:red">expressions are comma-separated</span>
+array-declaration ::= (var | const) arrayname = type[ | expression*] `expressions are comma-separated`
 
 
 expression ::= int | str | variablename  | expression `|>` expression
 
-<div style="margin-left:92px">
-| expression[expression]  <span style="color:red">array at index</span>
+| expression[expression]  `array at index`
 
-| len(expression)  <span style="color:red">length of expression</span>
+| len(expression) `length of expression`
 
-| type[ | expression*]  <span style="color:red">declaration of an array of type</span>
+| type[ | expression*] `declaration of an array of type`
 
-| print(expression) <span style="color:red"> prints something</span>
-</div>
+| print(expression) ` prints something`
 
-statement ::= var-declaration  variable declaration
+statement ::= var-declaration `variable declaration`
 
-<div style="margin-left:92px">
 | expression[expression] = expression 
 
-| {statement*} <span style="color:red">block<span>
+| {statement*} `block`
 
-| function-call <span style="color:red">calls a function</span>
+| function-call `calls a function`
 
-| if (expression) statement else statement <span style="color:red">if statement</span>
+| if (expression) statement else statement `if statement`
 
-| for-loop declaration ::= for ( expression ; expression; expression ) {statement*} <span style="color:red">for loops</span>
+| for-loop declaration ::= for ( expression ; expression; expression ) {statement*} `for loops`
 
-| return expression <span style="color:red">returns an expression</span>
-</div>
+| return expression `returns an expression`
 
-function-definition ::= fn funcname(paramname type){ statement* } <span style="color:red">var-declarations are comma-separated</span>
+function-definition ::= fn funcname(paramname type){ statement* } `var-declarations are comma-separated`
 
-function-call ::= funcname( | param*)  <span style="color:red">params are comma seperated</span>
+function-call ::= funcname( | param*) `params are comma seperated`
 
 Program ::= function-definition*
 
