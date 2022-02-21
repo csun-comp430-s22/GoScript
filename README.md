@@ -38,7 +38,7 @@ type ::= Int | Float | Bool | Str | Null | type[]
 
 operator ::= + | - | * | / | ^ | % | |>  `”|>” is defined below as expression |> expression`
 
-expression ::= int | str | variablename  | expression `|>` expression
+expression ::= int | str | variablename  | expression operator expression
 
 | expression[expression]  `array at index`
 
