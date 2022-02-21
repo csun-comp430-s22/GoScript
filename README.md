@@ -38,11 +38,6 @@ type ::= Int | Float | Bool | Str | Null | type[]
 
 operator ::= + | - | * | / | ^ | % | |>  `”|>” is defined below as expression |> expression`
 
-var-declaration ::= (const | var) (type | “”) variablename = expression `type | “” means can define variable without telling its type, for example var x = 1 or var x int = 1 should mean same thing`
-
-array-declaration ::= (var | const) arrayname = type[ | expression*] `expressions are comma-separated`
-
-
 expression ::= int | str | variablename  | expression `|>` expression
 
 | expression[expression]  `array at index`
@@ -52,6 +47,10 @@ expression ::= int | str | variablename  | expression `|>` expression
 | type[ | expression*] `declaration of an array of type`
 
 | print(expression) ` prints something`
+
+var-declaration ::= (const | var) (type | “”) variablename = expression `type | “” means can define variable without telling its type, for example var x = 1 or var x int = 1 should mean same thing`
+
+array-declaration ::= (var | const) arrayname = type[ | expression*] `expressions are comma-separated`
 
 statement ::= var-declaration `variable declaration`
 
