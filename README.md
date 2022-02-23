@@ -19,24 +19,28 @@ Go-lang. Our team member Vladimir has experience with golang and the rest of our
 Javascript
 
 ## Language Description:  
-has Go-lang like syntax (https://go.dev/) with some features inspired by Elixir (https://elixir-lang.org/). Like Go, it has static typing system and like Elixir, it has pipe operators identical to Elixir’s.
+Has Go-lang like syntax (https://go.dev/) with some features inspired by Elixir (https://elixir-lang.org/). Like Go, it has static typing system and like Elixir, it has pipe operators identical to Elixir’s.
 
 ## Abstract Syntax: 
 variablename is a variable
 
 fn is a function
 
-Str is a string
+string is a textual value (“abc”) 
 
-Float is a float
+number is a numeric value (1, 1.0, …)
 
-Null is null
+Str is string data type
+
+Int is an integer data type
+
+Float is a floating point number data type
 
 type[] is an array of type
 
-type ::= Int | Float | Bool | Str | Null | type[]
+type ::= Int | Float | Bool | Str | type[] | (type*) -> type 
 
-operator ::= + | - | * | / | ^ | % | |>  `”|>” is defined below as expression |> expression`
+operator ::= + | - | * | / | ^ | % | |>
 
 expression ::= int | str | variablename  | expression operator expression
 
@@ -44,36 +48,40 @@ expression ::= int | str | variablename  | expression operator expression
 
 | len(expression) `length of expression`
 
-| type[ | expression*] `declaration of an array of type`
+| type[expression*] `declaration of an array of type // array with no bounds or initialized with values //calling out of bounds is UB`
 
-| print(expression) ` prints something`
+| funcname(expression*) `calls a function`
 
-var-declaration ::= (const | var) (type | “”) variablename = expression `type | “” means can define variable without telling its type, for example var x = 1 or var x int = 1 should mean same thing`
+| expression(expression*) `higher order function call`
 
-array-declaration ::= (var | const) arrayname = type[ | expression*] `expressions are comma-separated`
+| (param*) -> expression `initializing higher order function`
+
+var-declaration ::= (const | var) type variablename = expression `must declare type when creating variable`
 
 statement ::= var-declaration `variable declaration`
 
 | expression[expression] = expression 
 
+| variablename = expression
+
 | {statement*} `block`
 
-| function-call `calls a function`
+| print(expression)  `prints something`
 
 | if (expression) statement else statement `if statement`
 
-| for-loop declaration ::= for ( expression ; expression; expression ) {statement*} `for loops`
+| for-loop declaration ::= for ( statement ; expression; statement) statement `for loops`
 
 | return expression `returns an expression`
 
-function-definition ::= fn funcname(paramname type){ statement* } `var-declarations are comma-separated`
+param ::= type variablename `parameters are immutable`
 
-function-call ::= funcname( | param*) `params are comma seperated`
+function-definition ::= fn type funcname(param*) { statement* } `param(s) are comma-separated`
 
 Program ::= function-definition*
 
 ## Computational Abstraction Non-Trivial Feature: 
-Higher Order Functions
+Higher Order Functions `without using javascript higher order functions`
 
 ## Non-Trivial Feature #2: 
  Mutable/Immutable variables
@@ -83,4 +91,4 @@ Pipe Operators
 https://elixirschool.com/en/lessons/basics/pipe_operator 
 
 ## Work Planned for Custom Component:  
-Pipe Operators
+Higher Order Functions `without using javascript higher order functions`
