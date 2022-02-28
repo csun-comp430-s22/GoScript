@@ -92,3 +92,16 @@ https://elixirschool.com/en/lessons/basics/pipe_operator
 
 ## Work Planned for Custom Component:  
 Higher Order Functions `without using javascript higher order functions`
+
+# How to run
+## Tests 
+```
+go test ./... -run ^Test
+```
+
+## Test Coverage
+```
+go test ./... -coverprofile=coverage.out -cover -run ^Test
+go tool cover -html=coverage.out
+```
+
