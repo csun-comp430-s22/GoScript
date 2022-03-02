@@ -59,6 +59,32 @@ func (t *Tokenizer) tryTokenizeNumber() *NumberToken {
 	}
 }
 
+func (t *Tokenizer) tryTokenizeVariable() *VariableToken {
+	var initialInputPos int = t.inputPos
+	var name string = ""
+
+	if unicode.IsLetter(rune(t.input[t.inputPos])) {
+		name += string(t.input[t.inputPos])
+		t.inputPos++
+		for t.inputPos < len(t.input) && (unicode.IsLetter(rune(t.input[t.inputPos])) || unicode.IsDigit(rune(t.input[t.inputPos]))) {
+			name += string(t.input[t.inputPos])
+			t.inputPos++
+		}
+	} else {
+		// reset position
+		t.inputPos = initialInputPos
+		return nil
+	}
+
+	if t.IsTokenString(name) {
+		// reset position
+		t.inputPos = initialInputPos
+		return nil
+	} else {
+		return &VariableToken{name}
+	}
+}
+
 func (t *Tokenizer) skipWhitespace() {
 	for t.inputPos < len(t.input) && unicode.IsSpace(rune(t.input[t.inputPos])) {
 		t.inputPos++
@@ -89,12 +115,15 @@ func (t *Tokenizer) tryTokenizeOther() Token {
 func (t *Tokenizer) TokenizeSingle() (Token, error) {
 	var otherToken Token
 	var num *NumberToken
+	var varToken *VariableToken
 	t.skipWhitespace()
 
 	if t.inputPos >= len(t.input) {
 		return nil, nil
 	} else if num = t.tryTokenizeNumber(); num != nil {
 		return num, nil
+	} else if varToken = t.tryTokenizeVariable(); varToken != nil {
+		return varToken, nil
 	} else if otherToken = t.tryTokenizeOther(); otherToken != nil {
 		return otherToken, nil
 	} else {
