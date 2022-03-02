@@ -6,7 +6,7 @@ import (
 
 func TestTokenizerError(t *testing.T) {
 
-	input := "badinput"
+	input := "@"
 
 	tokenizer := NewTokenizer(input)
 	_, err := tokenizer.TokenizeSingle()
