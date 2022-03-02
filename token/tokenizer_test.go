@@ -25,6 +25,27 @@ func TestTokenizerError(t *testing.T) {
 
 }
 
+func TestTokenizeNumber(t *testing.T) {
+	input := "100"
+
+	tokenizer := NewTokenizer(input)
+	tokens := tokenizer.Tokenize()
+	if !tokens[0].Equals(&NumberToken{100}) {
+		t.Error()
+	}
+
+}
+
+func TestTokenizeVariable(t *testing.T) {
+	input := "var123"
+
+	tokenizer := NewTokenizer(input)
+	tokens := tokenizer.Tokenize()
+	if !tokens[0].Equals(&VariableToken{input}) {
+		t.Error()
+	}
+}
+
 func TestTokenizeIf(t *testing.T) {
 	input := "if"
 
