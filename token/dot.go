@@ -12,5 +12,3 @@ func (dot *DotToken) Equals(other interface{}) bool {
 func (dot *DotToken) String() string {
 	return "."
 }
-
-//
