@@ -24,6 +24,10 @@ func NewTokenizer(input string) *Tokenizer {
 		"}":     &RightCurlyToken{},
 		"else":  &ElseToken{},
 		"+":     &PlusToken{},
+		"-":     &MinusToken{},
+		"*":     &MultToken{},
+		"/":     &DivToken{},
+		"%":     &ModToken{},
 	}
 
 	return &Tokenizer{
