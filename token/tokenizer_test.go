@@ -46,15 +46,14 @@ func TestTokenizeVariable(t *testing.T) {
 	}
 }
 
-func TestTokenizeIf(t *testing.T) {
-	input := "if"
+func TestTokenizeString(t *testing.T) {
+	input := "\"this is a String\""
 
 	tokenizer := NewTokenizer(input)
 	tokens := tokenizer.Tokenize()
-	if !tokens[0].Equals(&IfToken{}) {
+	if !tokens[0].Equals(&QuoteStringToken{input}) {
 		t.Error()
 	}
-
 }
 
 func TestAllKeywords(t *testing.T) {
