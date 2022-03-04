@@ -5,10 +5,10 @@ import "reflect"
 type ModToken struct {
 }
 
-func (mt *ModToken) Equals(other interface{}) bool {
-	return reflect.TypeOf(other) == reflect.TypeOf(mt)
+func (mdt *ModToken) Equals(other interface{}) bool {
+	return reflect.TypeOf(other) == reflect.TypeOf(mdt)
 }
 
-func (mt *ModToken) String() string {
+func (mdt *ModToken) String() string {
 	return "%"
 }

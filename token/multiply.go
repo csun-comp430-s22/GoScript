@@ -5,10 +5,10 @@ import "reflect"
 type MultToken struct {
 }
 
-func (mt *MultToken) Equals(other interface{}) bool {
-	return reflect.TypeOf(other) == reflect.TypeOf(mt)
+func (mlt *MultToken) Equals(other interface{}) bool {
+	return reflect.TypeOf(other) == reflect.TypeOf(mlt)
 }
 
-func (mt *MultToken) String() string {
+func (mlt *MultToken) String() string {
 	return "*"
 }
