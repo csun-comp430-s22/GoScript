@@ -11,5 +11,5 @@ func (vt *VariableToken) Equals(other interface{}) bool {
 }
 
 func (vt *VariableToken) String() string {
-	return vt.name
+	return "Variable(" + vt.name + ")"
 }
