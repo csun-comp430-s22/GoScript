@@ -28,6 +28,20 @@ func NewTokenizer(input string) *Tokenizer {
 		"*":     &MultToken{},
 		"/":     &DivToken{},
 		"%":     &ModToken{},
+		"<":     &LesserToken{},
+		">":     &GreaterToken{},
+		"=":     &EqualsToken{},
+		"||":    &OrToken{},
+		"|>":    &PipeOperatorToken{},
+		"^":     &PowerToken{},
+		"\"":    &QuoteToken{},
+		"float": &FloatToken{},
+		// "int":	&IntToken{},
+		// "str":	&StringToken{},
+		// "bool":	&BoolToken{},
+		"const": &ConstToken{},
+		".":     &DotToken{},
+		"&&":    &AndToken{},
 	}
 
 	return &Tokenizer{
