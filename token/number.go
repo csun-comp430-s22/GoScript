@@ -9,10 +9,6 @@ type NumberToken struct {
 	number int
 }
 
-func (nt *NumberToken) HashCode() int {
-	return nt.number
-}
-
 func (nt *NumberToken) Equals(other interface{}) bool {
 	return reflect.TypeOf(other) == reflect.TypeOf(nt)
 }

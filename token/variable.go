@@ -6,10 +6,6 @@ type VariableToken struct {
 	name string
 }
 
-func (vt *VariableToken) HashCode() int {
-	return 7
-}
-
 func (vt *VariableToken) Equals(other interface{}) bool {
 	return reflect.TypeOf(other) == reflect.TypeOf(vt)
 }
