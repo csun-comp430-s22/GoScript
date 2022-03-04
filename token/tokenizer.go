@@ -42,6 +42,7 @@ func NewTokenizer(input string) *Tokenizer {
 		"const": &ConstToken{},
 		".":     &DotToken{},
 		"&&":    &AndToken{},
+		"print": &PrintToken{},
 	}
 
 	return &Tokenizer{
