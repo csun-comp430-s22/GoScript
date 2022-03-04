@@ -30,7 +30,6 @@ func NewTokenizer(input string) *Tokenizer {
 		"%":     &ModToken{},
 		"<":     &LesserToken{},
 		">":     &GreaterToken{},
-		"=":     &EqualsToken{},
 		"||":    &OrToken{},
 		"|>":    &PipeOperatorToken{},
 		"^":     &PowerToken{},
@@ -42,6 +41,8 @@ func NewTokenizer(input string) *Tokenizer {
 		"const": &ConstToken{},
 		".":     &DotToken{},
 		"&&":    &AndToken{},
+		"!":     &NegateToken{},
+		"->":    &ArrowToken{},
 	}
 
 	return &Tokenizer{
