@@ -33,7 +33,6 @@ func NewTokenizer(input string) *Tokenizer {
 		"||":    &OrToken{},
 		"|>":    &PipeOperatorToken{},
 		"^":     &PowerToken{},
-		"\"":    &QuoteToken{},
 		"float": &FloatToken{},
 		// "int":	&IntToken{},
 		// "str":	&StringToken{},
@@ -107,6 +106,34 @@ func (t *Tokenizer) tryTokenizeVariable() *VariableToken {
 	}
 }
 
+func (t *Tokenizer) tryTokenizeString() *QuoteStringToken {
+	var initialInputPos int = t.inputPos
+	var stringValue string = ""
+
+	// checks for opening quote
+	if t.input[t.inputPos] == '"' {
+		t.inputPos++
+		// loop until we find the closing quote
+		for t.inputPos < len(t.input) && t.input[t.inputPos] != '"' {
+			stringValue += string(t.input[t.inputPos])
+			t.inputPos++
+
+			if t.inputPos >= len(t.input) {
+				panic(fmt.Sprintf("Unclosed string: '%s', add closing quote", stringValue))
+			}
+		}
+		// checks for closing quote then returns string token
+		if t.inputPos < len(t.input) && t.input[t.inputPos] == '"' {
+			t.inputPos++
+			return &QuoteStringToken{stringValue}
+		}
+	}
+
+	// reset position since we didn't find an opening quote
+	t.inputPos = initialInputPos
+	return nil
+}
+
 func (t *Tokenizer) skipWhitespace() {
 	for t.inputPos < len(t.input) && unicode.IsSpace(rune(t.input[t.inputPos])) {
 		t.inputPos++
@@ -138,6 +165,7 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 	var otherToken Token
 	var num *NumberToken
 	var varToken *VariableToken
+	var strToken *QuoteStringToken
 	t.skipWhitespace()
 
 	if t.inputPos >= len(t.input) {
@@ -146,6 +174,8 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 		return num, nil
 	} else if varToken = t.tryTokenizeVariable(); varToken != nil {
 		return varToken, nil
+	} else if strToken = t.tryTokenizeString(); strToken != nil {
+		return strToken, nil
 	} else if otherToken = t.tryTokenizeOther(); otherToken != nil {
 		return otherToken, nil
 	} else {
