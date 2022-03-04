@@ -38,12 +38,13 @@ func NewTokenizer(input string) *Tokenizer {
 		// "int":	&IntToken{},
 		// "str":	&StringToken{},
 		// "bool":	&BoolToken{},
-		"const": &ConstToken{},
-		".":     &DotToken{},
-		"&&":    &AndToken{},
-		"!":     &NegateToken{},
-		"=":     &AssignmentToken{},
-		"print": &PrintToken{},
+		"const":  &ConstToken{},
+		".":      &DotToken{},
+		"&&":     &AndToken{},
+		"!":      &NegateToken{},
+		"=":      &AssignmentToken{},
+		"print":  &PrintToken{},
+		"string": &StringToken{},
 	}
 
 	return &Tokenizer{
