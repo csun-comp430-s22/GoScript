@@ -23,6 +23,7 @@ func NewTokenizer(input string) *Tokenizer {
 		"{":     &LeftCurlyToken{},
 		"}":     &RightCurlyToken{},
 		"else":  &ElseToken{},
+		"+":     &PlusToken{},
 	}
 
 	return &Tokenizer{

@@ -66,7 +66,8 @@ func TestAllKeywords(t *testing.T) {
 	keywordTests := []keywordTest{
 		{"if", &IfToken{}},
 		{"else", &ElseToken{}},
-		{"true", &TrueToken{}}}
+		{"true", &TrueToken{}},
+		{"+", &PlusToken{}}}
 
 	for _, test := range keywordTests {
 		t.Run(test.Input, func(t *testing.T) {
