@@ -5,10 +5,10 @@ import "reflect"
 type MinusToken struct {
 }
 
-func (mt *MinusToken) Equals(other interface{}) bool {
-	return reflect.TypeOf(other) == reflect.TypeOf(mt)
+func (mst *MinusToken) Equals(other interface{}) bool {
+	return reflect.TypeOf(other) == reflect.TypeOf(mst)
 }
 
-func (mt *MinusToken) String() string {
+func (mst *MinusToken) String() string {
 	return "-"
 }
