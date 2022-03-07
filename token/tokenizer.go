@@ -182,7 +182,7 @@ func (t *Tokenizer) prefixCharsEqual(probe string) bool {
 	return probePos == len(probe)
 }
 
-func (t *Tokenizer) tryTokenizeOther() Token {
+func (t *Tokenizer) tryTokenizeKeyword() Token {
 	for key, token := range t.keywordMap {
 		if t.prefixCharsEqual(key) {
 			t.inputPos += len(key)
@@ -193,7 +193,7 @@ func (t *Tokenizer) tryTokenizeOther() Token {
 }
 
 func (t *Tokenizer) TokenizeSingle() (Token, error) {
-	var otherToken Token
+	var keywordToken Token
 	var symToken Token
 	var num *NumberToken
 	var varToken *VariableToken
@@ -210,8 +210,8 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 		return strToken, nil
 	} else if symToken = t.tryTokenizeSymbol(); symToken != nil {
 		return symToken, nil
-	} else if otherToken = t.tryTokenizeOther(); otherToken != nil {
-		return otherToken, nil
+	} else if keywordToken = t.tryTokenizeKeyword(); keywordToken != nil {
+		return keywordToken, nil
 	} else {
 		return nil, (NewTokenizerError(fmt.Sprintf(("invalid character %c at position %d"), t.input[t.inputPos], t.inputPos)))
 	}
