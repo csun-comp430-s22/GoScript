@@ -99,6 +99,11 @@ Higher Order Functions `without using javascript higher order functions`
 go test ./... -run ^Test
 ```
 
+OR with -v flag to see each test case
+```
+go test ./... -run ^Test -v
+```
+
 ## Test Coverage
 ```
 go test ./... -coverprofile=coverage.out -cover -run ^Test

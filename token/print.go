@@ -11,5 +11,5 @@ func (pt *PrintToken) Equals(other interface{}) bool {
 }
 
 func (pt *PrintToken) String() string {
-	return "print(\"" + pt.name + "\")"
+	return "print"
 }

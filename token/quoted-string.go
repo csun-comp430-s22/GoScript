@@ -3,7 +3,7 @@ package token
 import "reflect"
 
 type QuoteStringToken struct {
-	name string
+	somestring string
 }
 
 func (qst *QuoteStringToken) Equals(other interface{}) bool {
@@ -11,5 +11,5 @@ func (qst *QuoteStringToken) Equals(other interface{}) bool {
 }
 
 func (qst *QuoteStringToken) String() string {
-	return "\"" + qst.name + "\""
+	return "String: " + qst.somestring
 }
