@@ -7,7 +7,7 @@ import (
 )
 
 type Tokenizer struct {
-	tokenMap     map[string]Token
+	keywordMap   map[string]Token
 	oneSymbolMap map[string]Token
 	twoSymbolMap map[string]Token
 	input        []byte
@@ -16,7 +16,7 @@ type Tokenizer struct {
 
 func NewTokenizer(input string) *Tokenizer {
 
-	tokenMap := map[string]Token{
+	keywordMap := map[string]Token{
 		"true":  &TrueToken{},
 		"false": &FalseToken{},
 		"if":    &IfToken{},
@@ -59,7 +59,7 @@ func NewTokenizer(input string) *Tokenizer {
 	}
 
 	return &Tokenizer{
-		tokenMap:     tokenMap,
+		keywordMap:   keywordMap,
 		oneSymbolMap: oneSymbolMap,
 		twoSymbolMap: twoSymbolMap,
 		input:        []byte(input),
@@ -69,7 +69,7 @@ func NewTokenizer(input string) *Tokenizer {
 
 func (t *Tokenizer) IsTokenString(input string) bool {
 	// if string is in map returns true
-	_, ok := t.tokenMap[input]
+	_, ok := t.keywordMap[input]
 	return ok
 }
 
@@ -183,9 +183,8 @@ func (t *Tokenizer) prefixCharsEqual(probe string) bool {
 }
 
 func (t *Tokenizer) tryTokenizeOther() Token {
-	for key, token := range t.tokenMap {
+	for key, token := range t.keywordMap {
 		if t.prefixCharsEqual(key) {
-			fmt.Println(key)
 			t.inputPos += len(key)
 			return token
 		}
