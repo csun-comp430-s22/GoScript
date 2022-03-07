@@ -7,9 +7,11 @@ import (
 )
 
 type Tokenizer struct {
-	tokenMap map[string]Token
-	input    []byte
-	inputPos int
+	tokenMap     map[string]Token
+	oneSymbolMap map[string]Token
+	twoSymbolMap map[string]Token
+	input        []byte
+	inputPos     int
 }
 
 func NewTokenizer(input string) *Tokenizer {
@@ -18,38 +20,50 @@ func NewTokenizer(input string) *Tokenizer {
 		"true":  &TrueToken{},
 		"false": &FalseToken{},
 		"if":    &IfToken{},
-		"(":     &LeftParenToken{},
-		")":     &RightParenToken{},
-		"{":     &LeftCurlyToken{},
-		"}":     &RightCurlyToken{},
 		"else":  &ElseToken{},
-		"+":     &PlusToken{},
-		"-":     &MinusToken{},
-		"*":     &MultToken{},
-		"/":     &DivToken{},
-		"%":     &ModToken{},
-		"<":     &LesserToken{},
-		">":     &GreaterToken{},
-		"||":    &OrToken{},
-		"|>":    &PipeOperatorToken{},
-		"^":     &PowerToken{},
 		"float": &FloatToken{},
 		// "int":	&IntToken{},
 		// "str":	&StringToken{},
 		// "bool":	&BoolToken{},
 		"const":  &ConstToken{},
-		".":      &DotToken{},
-		"&&":     &AndToken{},
-		"!":      &NegateToken{},
-		"=":      &AssignmentToken{},
 		"print":  &PrintToken{},
 		"string": &StringToken{},
 	}
 
+	oneSymbolMap := map[string]Token{
+		"(": &LeftParenToken{},
+		")": &RightParenToken{},
+		"{": &LeftCurlyToken{},
+		"}": &RightCurlyToken{},
+
+		"+": &PlusToken{},
+		"-": &MinusToken{},
+		"*": &MultToken{},
+		"/": &DivToken{},
+		"^": &PowerToken{},
+		"%": &ModToken{},
+
+		"<": &LesserToken{},
+		">": &GreaterToken{},
+
+		".": &DotToken{},
+		"!": &NegateToken{},
+		"=": &AssignmentToken{},
+	}
+
+	twoSymbolMap := map[string]Token{
+		"||": &OrToken{},
+		"&&": &AndToken{},
+		"|>": &PipeOperatorToken{},
+		"!=": &NotEqualsToken{},
+	}
+
 	return &Tokenizer{
-		tokenMap: tokenMap,
-		input:    []byte(input),
-		inputPos: 0,
+		tokenMap:     tokenMap,
+		oneSymbolMap: oneSymbolMap,
+		twoSymbolMap: twoSymbolMap,
+		input:        []byte(input),
+		inputPos:     0,
 	}
 }
 
@@ -78,6 +92,23 @@ func (t *Tokenizer) tryTokenizeNumber() *NumberToken {
 		t.inputPos = initialInputPos
 		return nil
 	}
+}
+
+func (t *Tokenizer) tryTokenizeSymbol() Token {
+	for key, token := range t.twoSymbolMap {
+		if t.prefixCharsEqual(key) {
+			t.inputPos += len(key)
+			return token
+		}
+	}
+
+	for key, token := range t.oneSymbolMap {
+		if t.prefixCharsEqual(key) {
+			t.inputPos += len(key)
+			return token
+		}
+	}
+	return nil
 }
 
 func (t *Tokenizer) tryTokenizeVariable() *VariableToken {
@@ -154,6 +185,7 @@ func (t *Tokenizer) prefixCharsEqual(probe string) bool {
 func (t *Tokenizer) tryTokenizeOther() Token {
 	for key, token := range t.tokenMap {
 		if t.prefixCharsEqual(key) {
+			fmt.Println(key)
 			t.inputPos += len(key)
 			return token
 		}
@@ -163,6 +195,7 @@ func (t *Tokenizer) tryTokenizeOther() Token {
 
 func (t *Tokenizer) TokenizeSingle() (Token, error) {
 	var otherToken Token
+	var symToken Token
 	var num *NumberToken
 	var varToken *VariableToken
 	var strToken *QuoteStringToken
@@ -176,6 +209,8 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 		return varToken, nil
 	} else if strToken = t.tryTokenizeString(); strToken != nil {
 		return strToken, nil
+	} else if symToken = t.tryTokenizeSymbol(); symToken != nil {
+		return symToken, nil
 	} else if otherToken = t.tryTokenizeOther(); otherToken != nil {
 		return otherToken, nil
 	} else {
