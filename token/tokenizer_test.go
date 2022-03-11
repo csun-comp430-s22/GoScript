@@ -80,3 +80,41 @@ func TestAllKeywords(t *testing.T) {
 	}
 
 }
+
+func TestAllSymbols(t *testing.T) {
+	type symbolTest struct {
+		Input          string
+		ExpectedResult Token
+	}
+
+	symbolTests := []symbolTest{
+		{"(", &LeftParenToken{}},
+		{")", &RightParenToken{}},
+		{"{", &LeftCurlyToken{}},
+		{"}", &RightCurlyToken{}},
+		{"+", &PlusToken{}},
+		{"-", &MinusToken{}},
+		{"*", &MultToken{}},
+		{"/", &DivToken{}},
+		{"%", &ModToken{}},
+		{"<", &LesserToken{}},
+		{">", &GreaterToken{}},
+		{".", &DotToken{}},
+		{"!", &NegateToken{}},
+		{"=", &AssignmentToken{}},
+		{"||", &OrToken{}},
+		{"&&", &AndToken{}},
+		{"|>", &PipeOperatorToken{}},
+		{"!=", &NotEqualsToken{}}}
+
+	for _, test := range symbolTests {
+		t.Run(test.Input, func(t *testing.T) {
+			tokenizer := NewTokenizer(test.Input)
+			tokens := tokenizer.Tokenize()
+			actual := tokens[0]
+			if !actual.Equals(test.ExpectedResult) {
+				t.Errorf("expected token: \"%s\", got: %s", test.ExpectedResult, actual)
+			}
+		})
+	}
+}
