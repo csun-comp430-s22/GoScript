@@ -89,6 +89,12 @@ func (t *Tokenizer) tryTokenizeNumber() *NumberToken {
 		t.inputPos++
 	}
 
+	// if we find a dot then we need to stop and let the float tokenizer handle it
+	if t.inputPos < len(t.input) && string(t.input[t.inputPos]) == "." {
+		t.inputPos = initialInputPos
+		return nil
+	}
+
 	if len(digits) > 0 {
 		num, err := strconv.Atoi(digits)
 		if err != nil {
@@ -99,6 +105,40 @@ func (t *Tokenizer) tryTokenizeNumber() *NumberToken {
 		t.inputPos = initialInputPos
 		return nil
 	}
+}
+
+func (t *Tokenizer) tryTokenizeFloat() *FloatNumberToken {
+	var initialInputPos int = t.inputPos
+	var firstHalfDigits string = ""
+	var secondHalfDigits string = ""
+
+	// loop and store first half of digits until we find a dot
+	for t.inputPos < len(t.input) && unicode.IsDigit(rune(t.input[t.inputPos])) {
+		firstHalfDigits += string(t.input[t.inputPos])
+		t.inputPos++
+	}
+
+	// if we found a dot, we can start storing the second half of the number
+	if t.inputPos < len(t.input) && string(t.input[t.inputPos]) == "." {
+		t.inputPos++
+		for t.inputPos < len(t.input) && unicode.IsDigit(rune(t.input[t.inputPos])) {
+			secondHalfDigits += string(t.input[t.inputPos])
+			t.inputPos++
+		}
+	}
+
+	if len(firstHalfDigits) > 0 || len(secondHalfDigits) > 0 {
+		num, err := strconv.ParseFloat(firstHalfDigits, 64)
+		secondNum, err := strconv.ParseFloat(secondHalfDigits, 64)
+		if err != nil {
+			panic(err)
+		}
+		return &FloatNumberToken{num, secondNum}
+	} else {
+		t.inputPos = initialInputPos
+		return nil
+	}
+
 }
 
 func (t *Tokenizer) tryTokenizeSymbol() Token {
@@ -203,6 +243,7 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 	var keywordToken Token
 	var symToken Token
 	var num *NumberToken
+	var floatNum *FloatNumberToken
 	var varToken *VariableToken
 	var strToken *QuoteStringToken
 	t.skipWhitespace()
@@ -211,6 +252,8 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 		return nil, nil
 	} else if num = t.tryTokenizeNumber(); num != nil {
 		return num, nil
+	} else if floatNum = t.tryTokenizeFloat(); floatNum != nil {
+		return floatNum, nil
 	} else if varToken = t.tryTokenizeVariable(); varToken != nil {
 		return varToken, nil
 	} else if strToken = t.tryTokenizeString(); strToken != nil {
