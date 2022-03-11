@@ -6,13 +6,19 @@ import (
 )
 
 type NumberToken struct {
-	number int
+	Number int
 }
 
 func (nt *NumberToken) Equals(other interface{}) bool {
-	return reflect.TypeOf(other) == reflect.TypeOf(nt)
+
+	castNumToken := reflect.ValueOf(other)
+	castNumToken = reflect.Indirect(castNumToken)
+
+	otherNumber := int(castNumToken.FieldByName("Number").Int())
+
+	return reflect.TypeOf(*nt).Name() == castNumToken.Type().Name() && otherNumber == nt.Number
 }
 
 func (nt *NumberToken) String() string {
-	return strconv.Itoa(nt.number)
+	return strconv.Itoa(nt.Number)
 }
