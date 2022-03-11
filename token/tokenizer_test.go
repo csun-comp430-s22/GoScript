@@ -83,6 +83,10 @@ func TestAllKeywords(t *testing.T) {
 			if !actual.Equals(test.ExpectedResult) {
 				t.Errorf("expected token: \"%s\", got: %s", test.ExpectedResult, actual)
 			}
+			actualString := actual.String()
+			if actualString != test.Input {
+				t.Errorf("String() returned wrong output, expected: \"%s, got: \"%s\"\"", test.Input, actualString)
+			}
 		})
 	}
 
@@ -123,6 +127,10 @@ func TestAllSymbols(t *testing.T) {
 			actual := tokens[0]
 			if !actual.Equals(test.ExpectedResult) {
 				t.Errorf("expected token: \"%s\", got: %s", test.ExpectedResult, actual)
+			}
+			actualString := actual.String()
+			if actualString != test.Input {
+				t.Errorf("String() returned wrong output, expected: \"%s, got: \"%s\"\"", test.Input, actualString)
 			}
 		})
 	}

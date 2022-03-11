@@ -10,5 +10,5 @@ func (strt *StringToken) Equals(other interface{}) bool {
 }
 
 func (strt *StringToken) String() string {
-	return "string"
+	return "str"
 }
