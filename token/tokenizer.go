@@ -36,7 +36,8 @@ func NewTokenizer(input string) *Tokenizer {
 		")": &RightParenToken{},
 		"{": &LeftCurlyToken{},
 		"}": &RightCurlyToken{},
-
+		"[": &LeftBracketToken{},
+		"]": &RightBracketToken{},
 		"+": &PlusToken{},
 		"-": &MinusToken{},
 		"*": &MultToken{},

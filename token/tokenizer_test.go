@@ -69,6 +69,7 @@ func TestAllKeywords(t *testing.T) {
 		{"false", &FalseToken{}},
 		{"bool", &BoolToken{}},
 		{"const", &ConstToken{}},
+		{"float", &FloatToken{}},
 		{"int", &IntToken{}},
 		{"print", &PrintToken{}},
 		{"return", &ReturnToken{}},
@@ -96,6 +97,8 @@ func TestAllSymbols(t *testing.T) {
 	symbolTests := []symbolTest{
 		{"(", &LeftParenToken{}},
 		{")", &RightParenToken{}},
+		{"[", &LeftBracketToken{}},
+		{"]", &RightBracketToken{}},
 		{"{", &LeftCurlyToken{}},
 		{"}", &RightCurlyToken{}},
 		{"+", &PlusToken{}},
