@@ -111,6 +111,8 @@ func TestAllSymbols(t *testing.T) {
 		{".", &DotToken{}},
 		{"!", &NegateToken{}},
 		{"=", &AssignmentToken{}},
+		{"==", &EqualsToken{}},
+		{"->", &ArrowToken{}},
 		{"||", &OrToken{}},
 		{"&&", &AndToken{}},
 		{"|>", &PipeOperatorToken{}},

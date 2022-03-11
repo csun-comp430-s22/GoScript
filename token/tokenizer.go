@@ -58,6 +58,8 @@ func NewTokenizer(input string) *Tokenizer {
 		"&&": &AndToken{},
 		"|>": &PipeOperatorToken{},
 		"!=": &NotEqualsToken{},
+		"==": &EqualsToken{},
+		"->": &ArrowToken{},
 	}
 
 	return &Tokenizer{
