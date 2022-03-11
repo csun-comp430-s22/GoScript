@@ -1,6 +1,7 @@
 package token
 
 import (
+	"strconv"
 	"testing"
 )
 
@@ -27,10 +28,11 @@ func TestTokenizerError(t *testing.T) {
 
 func TestTokenizeNumber(t *testing.T) {
 	input := "100"
+	expected, _ := strconv.Atoi(input)
 
 	tokenizer := NewTokenizer(input)
 	tokens := tokenizer.Tokenize()
-	if !tokens[0].Equals(&NumberToken{100}) {
+	if !tokens[0].Equals(&NumberToken{expected}) {
 		t.Error()
 	}
 
