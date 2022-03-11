@@ -22,13 +22,16 @@ func NewTokenizer(input string) *Tokenizer {
 		"if":     &IfToken{},
 		"else":   &ElseToken{},
 		"float":  &FloatToken{},
+		"for":    &ForToken{},
+		"fn":     &FnToken{},
 		"int":    &IntToken{},
 		"str":    &StringToken{},
 		"bool":   &BoolToken{},
 		"const":  &ConstToken{},
 		"print":  &PrintToken{},
-		"string": &StringToken{},
 		"return": &ReturnToken{},
+		"string": &StringToken{},
+		"var":    &VarToken{},
 	}
 
 	oneSymbolMap := map[string]Token{
@@ -44,7 +47,7 @@ func NewTokenizer(input string) *Tokenizer {
 		"/": &DivToken{},
 		"^": &PowerToken{},
 		"%": &ModToken{},
-
+		",": &CommaToken{},
 		"<": &LesserToken{},
 		">": &GreaterToken{},
 

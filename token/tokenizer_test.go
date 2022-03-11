@@ -67,13 +67,16 @@ func TestAllKeywords(t *testing.T) {
 		{"else", &ElseToken{}},
 		{"true", &TrueToken{}},
 		{"false", &FalseToken{}},
+		{"for", &ForToken{}},
+		{"fn", &FnToken{}},
 		{"bool", &BoolToken{}},
 		{"const", &ConstToken{}},
 		{"float", &FloatToken{}},
 		{"int", &IntToken{}},
 		{"print", &PrintToken{}},
 		{"return", &ReturnToken{}},
-		{"str", &StringToken{}}}
+		{"str", &StringToken{}},
+		{"var", &VarToken{}}}
 
 	for _, test := range keywordTests {
 		t.Run(test.Input, func(t *testing.T) {
@@ -113,6 +116,7 @@ func TestAllSymbols(t *testing.T) {
 		{"<", &LesserToken{}},
 		{">", &GreaterToken{}},
 		{".", &DotToken{}},
+		{",", &CommaToken{}},
 		{"!", &NegateToken{}},
 		{"=", &AssignmentToken{}},
 		{"==", &EqualsToken{}},
