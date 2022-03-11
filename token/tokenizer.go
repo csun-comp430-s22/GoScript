@@ -17,17 +17,18 @@ type Tokenizer struct {
 func NewTokenizer(input string) *Tokenizer {
 
 	keywordMap := map[string]Token{
-		"true":  &TrueToken{},
-		"false": &FalseToken{},
-		"if":    &IfToken{},
-		"else":  &ElseToken{},
-		"float": &FloatToken{},
-		// "int":	&IntToken{},
-		// "str":	&StringToken{},
-		// "bool":	&BoolToken{},
+		"true":   &TrueToken{},
+		"false":  &FalseToken{},
+		"if":     &IfToken{},
+		"else":   &ElseToken{},
+		"float":  &FloatToken{},
+		"int":    &IntToken{},
+		"str":    &StringToken{},
+		"bool":   &BoolToken{},
 		"const":  &ConstToken{},
 		"print":  &PrintToken{},
 		"string": &StringToken{},
+		"return": &ReturnToken{},
 	}
 
 	oneSymbolMap := map[string]Token{
