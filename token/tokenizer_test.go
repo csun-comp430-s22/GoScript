@@ -143,3 +143,250 @@ func TestAllSymbols(t *testing.T) {
 		})
 	}
 }
+func testTokens(input string, token Token) bool {
+	tokenizer := NewTokenizer(input)
+	tokens := tokenizer.Tokenize()
+	return tokens[0].Equals(token)
+}
+func TestTokenizeIf(t *testing.T) {
+	isValid := testTokens("if", &IfToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeElse(t *testing.T) {
+	isValid := testTokens("else", &ElseToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeTrue(t *testing.T) {
+	isValid := testTokens("true", &TrueToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeFalse(t *testing.T) {
+	isValid := testTokens("false", &FalseToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeFor(t *testing.T) {
+	isValid := testTokens("for", &ForToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizefn(t *testing.T) {
+	isValid := testTokens("fn", &FnToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeBool(t *testing.T) {
+	isValid := testTokens("bool", &BoolToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeConst(t *testing.T) {
+	isValid := testTokens("const", &ConstToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeFloat(t *testing.T) {
+	isValid := testTokens("float", &FloatToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeInt(t *testing.T) {
+	isValid := testTokens("int", &IntToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizePrint(t *testing.T) {
+	isValid := testTokens("print", &PrintToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeReturn(t *testing.T) {
+	isValid := testTokens("return", &ReturnToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeStr(t *testing.T) {
+	isValid := testTokens("str", &StringToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeVar(t *testing.T) {
+	isValid := testTokens("var", &StringToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeLeftParen(t *testing.T) {
+	isValid := testTokens("(", &LeftParenToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeRightParen(t *testing.T) {
+	isValid := testTokens(")", &RightParenToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeLeftBracket(t *testing.T) {
+	isValid := testTokens("[", &LeftBracketToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeRightBracket(t *testing.T) {
+	isValid := testTokens("]", &RightBracketToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeLeftCurly(t *testing.T) {
+	isValid := testTokens("{", &LeftCurlyToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeRightCurly(t *testing.T) {
+	isValid := testTokens("}", &RightCurlyToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizePlus(t *testing.T) {
+	isValid := testTokens("+", &PlusToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeMinus(t *testing.T) {
+	isValid := testTokens("-", &MinusToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeMult(t *testing.T) {
+	isValid := testTokens("*", &MultToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeDiv(t *testing.T) {
+	isValid := testTokens("/", &DivToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeMod(t *testing.T) {
+	isValid := testTokens("%", &ModToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeLess(t *testing.T) {
+	isValid := testTokens("<", &LesserToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeGreater(t *testing.T) {
+	isValid := testTokens(">", &GreaterToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeDot(t *testing.T) {
+	isValid := testTokens(".", &DotToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeComma(t *testing.T) {
+	isValid := testTokens(",", &CommaToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeNegate(t *testing.T) {
+	isValid := testTokens("!", &NegateToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+func TestTokenizeAssignment(t *testing.T) {
+	isValid := testTokens("=", &AssignmentToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeEquals(t *testing.T) {
+	isValid := testTokens("==", &EqualsToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeArrow(t *testing.T) {
+	isValid := testTokens("->", &ArrowToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeOr(t *testing.T) {
+	isValid := testTokens("||", &OrToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeAnd(t *testing.T) {
+	isValid := testTokens("&&", &AndToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizePipe(t *testing.T) {
+	isValid := testTokens("|>", &PipeOperatorToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeNotEquals(t *testing.T) {
+	isValid := testTokens("!=", &NotEqualsToken{})
+	if !isValid {
+		t.Error()
+	}
+}
