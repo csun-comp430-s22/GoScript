@@ -227,7 +227,7 @@ func TestTokenizeStr(t *testing.T) {
 	}
 }
 func TestTokenizeVar(t *testing.T) {
-	isValid := testTokens("var", &StringToken{})
+	isValid := testTokens("var", &VarToken{})
 	if !isValid {
 		t.Error()
 	}
