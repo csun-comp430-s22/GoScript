@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"unicode"
+
+	"github.com/vSterlin/goscript/utils"
 )
 
 type Tokenizer struct {
@@ -273,7 +275,7 @@ func (t *Tokenizer) Tokenize() []Token {
 	tokens := []Token{}
 
 	// will print an error in nicer way if it panics
-	defer handleTokenizerError()
+	defer utils.HandleError()
 
 	for t.inputPos < len(t.input) {
 		current, err := t.TokenizeSingle()

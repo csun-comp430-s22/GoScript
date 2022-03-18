@@ -11,12 +11,13 @@ type NumberToken struct {
 
 func (nt *NumberToken) Equals(other interface{}) bool {
 
-	castNumToken := reflect.ValueOf(other)
-	castNumToken = reflect.Indirect(castNumToken)
-
-	otherNumber := int(castNumToken.FieldByName("Number").Int())
-
-	return reflect.TypeOf(*nt).Name() == castNumToken.Type().Name() && otherNumber == nt.Number
+	if reflect.TypeOf(nt) == reflect.TypeOf(other) {
+		castNumToken := reflect.ValueOf(other)
+		castNumToken = reflect.Indirect(castNumToken)
+		otherNumber := int(castNumToken.FieldByName("Number").Int())
+		return otherNumber == nt.Number
+	}
+	return false
 }
 
 func (nt *NumberToken) String() string {

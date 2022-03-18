@@ -2,3 +2,4 @@
 .vs/ProjectSettings.json
 .DS_Store
 /.vs
+coverage*
