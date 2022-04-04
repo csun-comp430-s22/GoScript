@@ -24,4 +24,4 @@ func (ne *NumberExp) String() string {
 	return strconv.Itoa(ne.Number)
 }
 
-func (ne *NumberExp) exp()
+func (ne *NumberExp) exp() {}
