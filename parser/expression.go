@@ -5,4 +5,5 @@ package parser
 type Exp interface {
 	Equals(other interface{}) bool
 	String() string
+	exp()
 }

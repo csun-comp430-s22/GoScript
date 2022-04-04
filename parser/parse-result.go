@@ -1,13 +1,10 @@
 package parser
 
-// go doesn't really have generic programming yet
-// so we can use empty interface to take in anything
-
-type ParseResult struct {
-	Result   interface{}
+type ParseResult[T any] struct {
+	Result   T
 	Position int
 }
 
-func NewParseResult(result interface{}, position int) *ParseResult {
-	return &ParseResult{Result: result, Position: position}
+func NewParseResult[T any](result T, position int) *ParseResult[T] {
+	return &ParseResult[T]{Result: result, Position: position}
 }
