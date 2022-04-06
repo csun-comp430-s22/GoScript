@@ -1,6 +1,6 @@
 package parser
 
-type Operator interface {
+type Node interface {
 	Equals(other interface{}) bool
-	Node
+	node()
 }

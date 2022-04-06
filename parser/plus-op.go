@@ -9,6 +9,4 @@ func (po *PlusOp) Equals(other interface{}) bool {
 	return reflect.TypeOf(other) == reflect.TypeOf(po)
 }
 
-func (po *PlusOp) String() string {
-	return "+"
-}
+func (po *PlusOp) node() {}
