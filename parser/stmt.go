@@ -1,7 +1,6 @@
 package parser
 
 type Stmt interface {
-	Equals(other interface{}) bool
-	Stmt()
+	stmt()
 	Node
 }

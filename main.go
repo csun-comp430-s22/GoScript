@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/vSterlin/goscript/parser"
 )
 
@@ -17,11 +19,11 @@ import (
 
 func main() {
 
-	first := parser.NewOpExp(&parser.NumberExp{Number: 1}, &parser.PlusOp{}, &parser.NumberExp{Number: 1})
-	second := parser.NewOpExp(&parser.NumberExp{Number: 1}, &parser.PlusOp{}, &parser.NumberExp{Number: 1})
-
 	// fmt.Printf("%#v\n %#v\n", first, second)
 
-	first.Equals(second)
+	one := &parser.ParseResult[parser.Exp]{Result: &parser.NumberExp{1}}
+	two := &parser.ParseResult[parser.Exp]{Result: &parser.NumberExp{1}}
+
+	fmt.Printf("one.Equals(two): %v\n", one.Equals(two))
 
 }

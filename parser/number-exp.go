@@ -25,5 +25,3 @@ func (ne *NumberExp) String() string {
 }
 
 func (ne *NumberExp) exp() {}
-
-func (ne *NumberExp) node() {}
