@@ -4,6 +4,6 @@ type Program struct {
 	Stmts Stmt
 }
 
-func NewProgramOp(stmts Stmt) *Program {
+func NewProgram(stmts Stmt) *Program {
 	return &Program{Stmts: stmts}
 }
