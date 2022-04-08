@@ -1,6 +1,9 @@
 package parser
 
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+)
 
 type ForStmt struct {
 	Guard Exp
@@ -18,4 +21,8 @@ func (FS *ForStmt) Equals(other interface{}) bool {
 		return ok && otherForStmt.Guard.Equals(FS.Guard) && otherForStmt.Body.Equals(FS.Body)
 	}
 	return false
+}
+
+func (FS *ForStmt) String() string {
+	return fmt.Sprintf("ForStmt(%s, %s)", FS.Guard, FS.Body)
 }
