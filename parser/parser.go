@@ -26,7 +26,7 @@ func (p *Parser) GetToken(position int) (token.Token, error) {
 	}
 }
 
-func (p *Parser) ParseOp(position int) (*ParseResult[Operator], error) {
+func (p *Parser) ParseAdditiveOp(position int) (*ParseResult[Operator], error) {
 	// TODO handle error
 	tkn, _ := p.GetToken(position)
 	// tokenType = reflect.TypeOf(tkn)
@@ -34,6 +34,14 @@ func (p *Parser) ParseOp(position int) (*ParseResult[Operator], error) {
 	// cast tkn as PlusToken, if casted then it's instance of it
 	if _, ok := tkn.(*token.PlusToken); ok {
 		return NewParseResult[Operator](&PlusOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.MinusToken); ok {
+		return NewParseResult[Operator](&MinusOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.MultToken); ok {
+		return NewParseResult[Operator](&MultiplyOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.DivToken); ok {
+		return NewParseResult[Operator](&DivideOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.PipeOperatorToken); ok {
+		return NewParseResult[Operator](&PipeOp{}, position+1), nil
 	} else {
 		return nil, NewParserError("err")
 	}

@@ -2,7 +2,10 @@ package parser
 
 import (
 	"fmt"
+
 	"testing"
+
+	"github.com/vSterlin/goscript/token"
 )
 
 func TestPlusOpExp(t *testing.T) {
@@ -19,6 +22,22 @@ func TestPlusOpExp(t *testing.T) {
 	}
 	if first.Equals(third) {
 		t.Error("Expected first operator expression not to be equal to third")
+	}
+
+}
+
+func TestAdditiveOpPlus(t *testing.T) {
+
+	tokens := []token.Token{&token.PlusToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseAdditiveOp(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&PlusOp{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
 	}
 
 }
