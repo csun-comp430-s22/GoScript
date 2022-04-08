@@ -5,6 +5,6 @@ import "reflect"
 type NegateOp struct {
 }
 
-func (neo *NegateOp) Equals(other interface{}) bool {
+func (neo *NegateOp) Equals(other any) bool {
 	return reflect.TypeOf(other) == reflect.TypeOf(neo)
 }
