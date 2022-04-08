@@ -209,3 +209,23 @@ func TestModOpTestExp(t *testing.T) {
 	}
 
 } */
+
+func TestLessThanExp(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{1}, &token.LesserToken{}, &token.NumberToken{2}}
+	parser := NewParser(tokens)
+
+	parseResult, err := parser.ParseComparisonExp(0)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	expected := NewParseResult(NewOpExp(&NumberExp{1}, &LessOp{}, &NumberExp{2}), 3)
+
+	fmt.Printf("parseResult: %v\n", parseResult)
+	fmt.Printf("expected: %v\n", expected)
+
+	if !parseResult.Equals(expected) {
+		t.Error("Expected parse result did not equal actual")
+
+	}
+}

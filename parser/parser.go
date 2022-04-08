@@ -91,30 +91,65 @@ func (p *Parser) ParseAdditiveExp(position int) (*ParseResult[Exp], error) {
 		additiveOp, err := p.ParseAdditiveOp(current.Position)
 		if err != nil {
 			shouldRun = false
+			break
 		}
 		anotherPrimary, err := p.ParsePrimaryExp(additiveOp.Position)
 		if err != nil {
 			shouldRun = false
+			break
 		}
-		current = NewParseResult[Exp](&OperatorExp{current.Result, additiveOp.Result, anotherPrimary.Result}, anotherPrimary.Position)
+		current = NewParseResult[Exp](NewOpExp(current.Result, additiveOp.Result, anotherPrimary.Result), anotherPrimary.Position)
 
 	}
 
 	return current, nil
 }
 
-func (p *Parser) ParseLessThanExp(position int) (*ParseResult[Exp], error) {
-	current, _ := p.ParseAdditiveExp(position)
-	shouldRun := true
+func (p *Parser) ParseComparisonOp(position int) (*ParseResult[Operator], error) {
+	tkn, _ := p.GetToken(position)
 
-	for shouldRun {
-		p.AssertTokenIsHere(current.Position, &token.LesserToken{})
-		other, err := p.ParseAdditiveExp(current.Position + 1)
-		if err != nil {
-			shouldRun = false
-		}
-		current = NewParseResult[Exp](&OperatorExp{current.Result, &LessOp{}, other.Result}, other.Position)
+	if _, ok := tkn.(*token.EqualsToken); ok {
+		return NewParseResult[Operator](&EqualsOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.NotEqualsToken); ok {
+		return NewParseResult[Operator](&NotEqualsOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.LesserToken); ok {
+		return NewParseResult[Operator](&LessOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.GreaterToken); ok {
+		return NewParseResult[Operator](&GreaterOp{}, position+1), nil
+	} else {
+		return nil, NewParserError("super descritptive error")
 	}
 
-	return current, nil
 }
+
+func (p *Parser) ParseComparisonExp(position int) (*ParseResult[Exp], error) {
+	additive, err := p.ParseAdditiveExp(position)
+	if err != nil {
+		return nil, NewParserError(err.Error())
+	}
+	comparisonOp, err := p.ParseComparisonOp(additive.Position)
+	if err != nil {
+		return nil, NewParserError(err.Error())
+	}
+	secAdditive, err := p.ParseAdditiveExp(comparisonOp.Position)
+	if err != nil {
+		return nil, NewParserError(err.Error())
+	}
+	return NewParseResult[Exp](NewOpExp(additive.Result, comparisonOp.Result, secAdditive.Result), secAdditive.Position), nil
+}
+
+// func (p *Parser) ParseLessThanExp(position int) (*ParseResult[Exp], error) {
+// 	current, _ := p.ParseAdditiveExp(position)
+// 	shouldRun := true
+
+// 	for shouldRun {
+// 		p.AssertTokenIsHere(current.Position, &token.LesserToken{})
+// 		other, err := p.ParseAdditiveExp(current.Position + 1)
+// 		if err != nil {
+// 			shouldRun = false
+// 		}
+// 		current = NewParseResult[Exp](&OperatorExp{current.Result, &LessOp{}, other.Result}, other.Position)
+// 	}
+
+// 	return current, nil
+// }

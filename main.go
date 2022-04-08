@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/vSterlin/goscript/parser"
+	"github.com/vSterlin/goscript/token"
 )
 
 // func main() {
@@ -21,9 +22,23 @@ func main() {
 
 	// fmt.Printf("%#v\n %#v\n", first, second)
 
-	one := &parser.ParseResult[parser.Exp]{Result: &parser.NumberExp{1}}
-	two := &parser.ParseResult[parser.Exp]{Result: &parser.NumberExp{1}}
+	// one := &parser.ParseResult[parser.Exp]{Result: &parser.NumberExp{1}}
+	// two := &parser.ParseResult[parser.Exp]{Result: &parser.NumberExp{1}}
 
-	fmt.Printf("one.Equals(two): %v\n", one.Equals(two))
+	// fmt.Printf("one.Equals(two): %v\n", one.Equals(two))
 
+	tokens := []token.Token{&token.NumberToken{1}, &token.LesserToken{}, &token.NumberToken{2}}
+
+	p := parser.NewParser(tokens)
+
+	parseResult, _ := p.ParseComparisonExp(0)
+
+	expected := parser.NewParseResult(parser.NewOpExp(&parser.NumberExp{1}, &parser.LessOp{}, &parser.NumberExp{2}), 3)
+
+	fmt.Printf("parseResult: %#v\n", parseResult)
+	fmt.Printf("parseResult.Result: %v\n", parseResult.Result)
+	fmt.Printf("expected.Result: %v\n", expected.Result)
+	fmt.Printf("expected: %#v\n", expected)
+
+	parseResult.Equals(expected)
 }
