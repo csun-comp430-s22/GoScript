@@ -9,7 +9,7 @@ type Variable struct {
 	Name string
 }
 
-func newVariable(name string) *Variable {
+func Newvariable(name string) *Variable {
 	return &Variable{Name: name}
 }
 
