@@ -26,6 +26,29 @@ func (p *Parser) GetToken(position int) (token.Token, error) {
 	}
 }
 
+// TODO
+
+// func (p *Parser) ParseEqualsExp(position int) (*ParseResult[Exp], error) {
+// 	current := parsels
+// }
+
+// func (p *Parser) ParseExp(position int) (*ParseResult[Exp], error) {
+// 	return p.ParseEqualsExp(position)
+// }
+
+func (p *Parser) ParsePrimaryExp(position int) (*ParseResult[Exp], error) {
+	tkn, _ := p.GetToken(position)
+	if varToken, ok := tkn.(*token.VariableToken); ok {
+		name := varToken.Name
+		return NewParseResult[Exp](&VariableExp{Variable: Variable{Name: name}}, position+1), nil
+	} else if numToken, ok := tkn.(*token.NumberToken); ok {
+		val := numToken.Number
+		return NewParseResult[Exp](&NumberExp{Number: val}, position+1), nil
+	} else { // TODO missing some else ifs abovs
+		return nil, NewParserError("Expected primary expression, received: " + tkn.String())
+	}
+}
+
 func (p *Parser) ParseAdditiveOp(position int) (*ParseResult[Operator], error) {
 	// TODO handle error
 	tkn, _ := p.GetToken(position)
@@ -46,4 +69,24 @@ func (p *Parser) ParseAdditiveOp(position int) (*ParseResult[Operator], error) {
 		return nil, NewParserError("err")
 	}
 
+}
+
+func (p *Parser) ParseAdditiveExp(position int) (*ParseResult[Exp], error) {
+	current, _ := p.ParsePrimaryExp(position)
+	shouldRun := true
+
+	for shouldRun {
+		additiveOp, err := p.ParseAdditiveOp(current.Position)
+		if err != nil {
+			shouldRun = false
+		}
+		anotherPrimary, err := p.ParsePrimaryExp(additiveOp.Position)
+		if err != nil {
+			shouldRun = false
+		}
+		current = NewParseResult[Exp](&OperatorExp{current.Result, additiveOp.Result, anotherPrimary.Result}, anotherPrimary.Position)
+
+	}
+
+	return current, nil
 }

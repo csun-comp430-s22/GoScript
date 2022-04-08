@@ -22,3 +22,5 @@ func (VE *VariableExp) Equals(other interface{}) bool {
 func (VE *VariableExp) String() string {
 	return fmt.Sprintf("VariableExp(%s)", VE.Variable)
 }
+
+func (ve *VariableExp) exp() {}

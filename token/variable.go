@@ -3,7 +3,7 @@ package token
 import "reflect"
 
 type VariableToken struct {
-	name string
+	Name string
 }
 
 func (vt *VariableToken) Equals(other interface{}) bool {
@@ -11,5 +11,5 @@ func (vt *VariableToken) Equals(other interface{}) bool {
 }
 
 func (vt *VariableToken) String() string {
-	return "Variable(" + vt.name + ")"
+	return "Variable(" + vt.Name + ")"
 }
