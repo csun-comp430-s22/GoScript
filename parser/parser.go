@@ -26,6 +26,18 @@ func (p *Parser) GetToken(position int) (token.Token, error) {
 	}
 }
 
+func (p *Parser) AssertTokenIsHere(position int, expected token.Token) {
+	received, err := p.GetToken(position)
+
+	if err != nil {
+		panic(err)
+	}
+
+	if !expected.Equals(received) {
+		panic(NewParserError("expected: " + expected.String() + " received: " + received.String()))
+	}
+}
+
 // TODO
 
 // func (p *Parser) ParseEqualsExp(position int) (*ParseResult[Exp], error) {
@@ -86,6 +98,22 @@ func (p *Parser) ParseAdditiveExp(position int) (*ParseResult[Exp], error) {
 		}
 		current = NewParseResult[Exp](&OperatorExp{current.Result, additiveOp.Result, anotherPrimary.Result}, anotherPrimary.Position)
 
+	}
+
+	return current, nil
+}
+
+func (p *Parser) ParseLessThanExp(position int) (*ParseResult[Exp], error) {
+	current, _ := p.ParseAdditiveExp(position)
+	shouldRun := true
+
+	for shouldRun {
+		p.AssertTokenIsHere(current.Position, &token.LesserToken{})
+		other, err := p.ParseAdditiveExp(current.Position + 1)
+		if err != nil {
+			shouldRun = false
+		}
+		current = NewParseResult[Exp](&OperatorExp{current.Result, &LessOp{}, other.Result}, other.Position)
 	}
 
 	return current, nil
