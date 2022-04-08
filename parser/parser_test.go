@@ -59,6 +59,21 @@ func TestMinusOpExp(t *testing.T) {
 
 }
 
+func TestSubtractiveOpMinus(t *testing.T) {
+
+	tokens := []token.Token{&token.MinusToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseAdditiveOp(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&MinusOp{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
+	}
+
+}
 func TestDivideOpExp(t *testing.T) {
 	first := NewOpExp(&NumberExp{1}, &DivideOp{}, &NumberExp{1})
 	second := NewOpExp(&NumberExp{1}, &DivideOp{}, &NumberExp{1})
@@ -73,6 +88,22 @@ func TestDivideOpExp(t *testing.T) {
 	}
 	if first.Equals(third) {
 		t.Error("Expected first operator expression not to be equal to third")
+	}
+
+}
+
+func TestDivisionOpDivide(t *testing.T) {
+
+	tokens := []token.Token{&token.DivToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseAdditiveOp(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&DivideOp{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
 	}
 
 }
@@ -95,6 +126,22 @@ func TestMultiplyOpExp(t *testing.T) {
 
 }
 
+func TestMultiplicationOpMultiply(t *testing.T) {
+
+	tokens := []token.Token{&token.MultToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseAdditiveOp(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&MultiplyOp{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
+	}
+
+}
+
 func TestPowOpExp(t *testing.T) {
 	first := NewOpExp(&NumberExp{1}, &PowOp{}, &NumberExp{1})
 	second := NewOpExp(&NumberExp{1}, &PowOp{}, &NumberExp{1})
@@ -113,6 +160,22 @@ func TestPowOpExp(t *testing.T) {
 
 }
 
+/* func TestExponentOpPower(t *testing.T) {
+
+	tokens := []token.Token{&token.PowerToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseAdditiveOp(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&PowOp{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
+	}
+
+} */
+
 func TestModOpTestExp(t *testing.T) {
 	first := NewOpExp(&NumberExp{1}, &ModOp{}, &NumberExp{1})
 	second := NewOpExp(&NumberExp{1}, &ModOp{}, &NumberExp{1})
@@ -130,3 +193,19 @@ func TestModOpTestExp(t *testing.T) {
 	}
 
 }
+
+/* func TestModuloOpMod(t *testing.T) {
+
+	tokens := []token.Token{&token.ModToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseAdditiveOp(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&ModOp{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
+	}
+
+} */
