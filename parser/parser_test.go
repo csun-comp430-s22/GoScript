@@ -473,7 +473,7 @@ func TestGreaterEqualOp(t *testing.T) {
 		t.Error("Expected first operator expression not to be equal to third")
 	}
 }
-func TestNegateOp(t *testing.T) {
+func TestNegateOpTestExp(t *testing.T) {
 	first := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{1})
 	second := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{1})
 	third := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{2})
@@ -487,5 +487,17 @@ func TestNegateOp(t *testing.T) {
 	}
 	if first.Equals(third) {
 		t.Error("Expected first operator expression not to be equal to third")
+	}
+}
+
+func TestNegateOpMod(t *testing.T) {
+	tokens := []token.Token{&token.NegateToken{}, &token.ModToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseLogicalOp(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+	if !parseResult.Equals(NewParseResult[Operator](&NegateOp{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
 	}
 }
