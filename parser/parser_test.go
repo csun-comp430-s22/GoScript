@@ -160,7 +160,7 @@ func TestPowOpExp(t *testing.T) {
 
 }
 
-/* func TestExponentOpPower(t *testing.T) {
+func TestExponentOpPower(t *testing.T) {
 
 	tokens := []token.Token{&token.PowerToken{}}
 	parser := NewParser(tokens)
@@ -174,7 +174,7 @@ func TestPowOpExp(t *testing.T) {
 
 	}
 
-} */
+}
 
 func TestModOpTestExp(t *testing.T) {
 	first := NewOpExp(&NumberExp{1}, &ModOp{}, &NumberExp{1})
@@ -194,7 +194,7 @@ func TestModOpTestExp(t *testing.T) {
 
 }
 
-/* func TestModuloOpMod(t *testing.T) {
+func TestModuloOpMod(t *testing.T) {
 
 	tokens := []token.Token{&token.ModToken{}}
 	parser := NewParser(tokens)
@@ -208,7 +208,7 @@ func TestModOpTestExp(t *testing.T) {
 
 	}
 
-} */
+}
 
 func TestAndOpExp(t *testing.T) {
 	first := NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1})
@@ -227,7 +227,7 @@ func TestAndOpExp(t *testing.T) {
 	}
 }
 
-func TestLessThanExp(t *testing.T) {
+/* func TestLessThanExp(t *testing.T) {
 	tokens := []token.Token{&token.NumberToken{1}, &token.LesserToken{}, &token.NumberToken{2}}
 	parser := NewParser(tokens)
 
@@ -245,4 +245,4 @@ func TestLessThanExp(t *testing.T) {
 		t.Error("Expected parse result did not equal actual")
 
 	}
-}
+} */

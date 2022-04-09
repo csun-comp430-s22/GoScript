@@ -75,6 +75,10 @@ func (p *Parser) ParseAdditiveOp(position int) (*ParseResult[Operator], error) {
 		return NewParseResult[Operator](&MultiplyOp{}, position+1), nil
 	} else if _, ok := tkn.(*token.DivToken); ok {
 		return NewParseResult[Operator](&DivideOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.ModToken); ok {
+		return NewParseResult[Operator](&ModOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.PowerToken); ok {
+		return NewParseResult[Operator](&PowOp{}, position+1), nil
 	} else if _, ok := tkn.(*token.PipeOperatorToken); ok {
 		return NewParseResult[Operator](&PipeOp{}, position+1), nil
 	} else {
