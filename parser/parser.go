@@ -142,6 +142,36 @@ func (p *Parser) ParseComparisonExp(position int) (*ParseResult[Exp], error) {
 	return NewParseResult[Exp](NewOpExp(additive.Result, comparisonOp.Result, secAdditive.Result), secAdditive.Position), nil
 }
 
+func (p *Parser) ParseLogicalOp(position int) (*ParseResult[Operator], error) {
+	tkn, _ := p.GetToken(position)
+
+	if _, ok := tkn.(*token.AndToken); ok {
+		return NewParseResult[Operator](&AndOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.OrToken); ok {
+		return NewParseResult[Operator](&OrOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.NegateToken); ok {
+		return NewParseResult[Operator](&NegateOp{}, position+1), nil
+	} else {
+		return nil, NewParserError("super descritptive error")
+	}
+}
+
+func (p *Parser) ParseLogicalExp(position int) (*ParseResult[Exp], error) {
+	comparison, err := p.ParseAdditiveExp(position)
+	if err != nil {
+		return nil, NewParserError(err.Error())
+	}
+	logicalOp, err := p.ParseLogicalOp(comparison.Position)
+	if err != nil {
+		return nil, NewParserError(err.Error())
+	}
+	secComparison, err := p.ParseAdditiveExp(logicalOp.Position)
+	if err != nil {
+		return nil, NewParserError(err.Error())
+	}
+	return NewParseResult[Exp](NewOpExp(comparison.Result, logicalOp.Result, secComparison.Result), secComparison.Position), nil
+}
+
 // func (p *Parser) ParseLessThanExp(position int) (*ParseResult[Exp], error) {
 // 	current, _ := p.ParseAdditiveExp(position)
 // 	shouldRun := true
