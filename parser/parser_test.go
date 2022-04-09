@@ -515,3 +515,97 @@ func TestNegateOpMod(t *testing.T) {
 		t.Error("Expected parse result did not equal actual")
 	}
 }
+
+func TestIncorrectPosition(t *testing.T) {
+	parser := NewParser([]token.Token{})
+	_, err := parser.GetToken(-1)
+	if err == nil {
+		t.Error("Expected error, got nil")
+	}
+}
+
+func TestAdditivePlusExp(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{1}, &token.PlusToken{}, &token.NumberToken{1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseAdditiveExp(0)
+
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1}), 3)) {
+		t.Error("Parse result did not equal the expected result")
+	}
+}
+
+func TestAdditiveExp(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{1}, &token.PlusToken{}, &token.NumberToken{1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseAdditiveExp(0)
+
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1}), 3)) {
+		t.Error("Parse result did not equal the expected result")
+	}
+}
+
+func TestComparisonExpLess(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{1}, &token.LesserToken{}, &token.NumberToken{1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseComparisonExp(0)
+
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &LessOp{}, &NumberExp{1}), 3)) {
+		t.Error("Parse result did not equal the expected result")
+	}
+}
+
+func TestComparisonExpGreater(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{1}, &token.GreaterToken{}, &token.NumberToken{1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseComparisonExp(0)
+
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &GreaterOp{}, &NumberExp{1}), 3)) {
+		t.Error("Parse result did not equal the expected result")
+	}
+}
+
+func TestComparisonExpEquals(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{1}, &token.EqualsToken{}, &token.NumberToken{1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseComparisonExp(0)
+
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1}), 3)) {
+		t.Error("Parse result did not equal the expected result")
+	}
+}
+
+func TestComparisonExpNotEquals(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{1}, &token.NotEqualsToken{}, &token.NumberToken{1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseComparisonExp(0)
+
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &NotEqualsOp{}, &NumberExp{1}), 3)) {
+		t.Error("Parse result did not equal the expected result")
+	}
+}
+
+// if _, ok := tkn.(*token.AndToken); ok {
+// 	return NewParseResult[Operator](&AndOp{}, position+1), nil
+// } else if _, ok := tkn.(*token.OrToken); ok {
+// 	return NewParseResult[Operator](&OrOp{}, position+1), nil
+// } else if _, ok := tkn.(*token.NegateToken); ok {
+// 	return NewParseResult[Operator](&NegateOp{}, position+1), nil
+
+// func TestLogicalExpAnd(t *testing.T) {
+// 	// tokens := []token.Token{&token.TrueToken{}, &token.AndToken{}, &token.TrueToken{1}}
+// 	tokens := []token.Token{&token.NumberToken{1}, &token.AndToken{}, &token.NumberToken{1}}
+
+// 	parser := NewParser(tokens)
+// 	parseResult, _ := parser.ParseLogicalExp(0)
+
+// 	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1}), 3)) {
+// 		fmt.Printf("%#v\n", NewParseResult[Exp](NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1}), 3))
+// 		t.Error("Parse result did not equal the expected result")
+// 	}
+// }
