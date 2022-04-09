@@ -2,7 +2,6 @@ package parser
 
 import (
 	"reflect"
-	"strconv"
 )
 
 type NumberExp struct {
@@ -18,10 +17,6 @@ func (ne *NumberExp) Equals(other interface{}) bool {
 	}
 	return false
 
-}
-
-func (ne *NumberExp) String() string {
-	return strconv.Itoa(ne.Number)
 }
 
 func (ne *NumberExp) exp() {}

@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -35,8 +34,4 @@ func equalVardecs(a []Vardec, b []Vardec) bool {
 		}
 	}
 	return true
-}
-
-func (FD *FunctionDef) String() string {
-	return fmt.Sprintf("FunctionDef(%s, %s, %s, %s)", FD.Name, FD.Args, FD.Body, FD.ReturnType)
 }

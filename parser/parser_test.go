@@ -28,7 +28,7 @@ func TestPlusOpExp(t *testing.T) {
 
 func TestAdditiveOpPlus(t *testing.T) {
 
-	tokens := []token.Token{&token.PlusToken{}}
+	tokens := []token.Token{&token.PlusToken{}, &token.NumberToken{Number: 1}}
 	parser := NewParser(tokens)
 	parseResult, err := parser.ParseAdditiveOp(0)
 	if err != nil {
@@ -336,7 +336,7 @@ func TestOrOpExp(t *testing.T) {
 func TestOrOpMod(t *testing.T) {
 	tokens := []token.Token{&token.OrToken{}}
 	parser := NewParser(tokens)
-	parseResult, err := parser.ParseLogicalOp(0)
+	parseResult, err := parser.ParseAdditiveOp(0)
 	if err != nil {
 		t.Error("Unexpected parser error")
 	}
@@ -525,18 +525,18 @@ func TestIncorrectPosition(t *testing.T) {
 }
 
 func TestAdditivePlusExp(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.PlusToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseAdditiveExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1}), 3)) {
+	if parseResult.Equals(NewParseResult[Exp](NewOpExp(&VariableExp{}, &EqualsOp{}, &NumberExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
 
 func TestAdditiveExp(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.PlusToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.PlusToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseAdditiveExp(0)
@@ -547,7 +547,7 @@ func TestAdditiveExp(t *testing.T) {
 }
 
 func TestComparisonExpLess(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.LesserToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.LesserToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
@@ -558,7 +558,7 @@ func TestComparisonExpLess(t *testing.T) {
 }
 
 func TestComparisonExpGreater(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.GreaterToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.GreaterToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
@@ -569,7 +569,7 @@ func TestComparisonExpGreater(t *testing.T) {
 }
 
 func TestComparisonExpEquals(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.EqualsToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
@@ -580,7 +580,7 @@ func TestComparisonExpEquals(t *testing.T) {
 }
 
 func TestComparisonExpNotEquals(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.NotEqualsToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.NotEqualsToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
@@ -599,13 +599,24 @@ func TestComparisonExpNotEquals(t *testing.T) {
 
 func TestLogicalExpAnd(t *testing.T) {
 	// tokens := []token.Token{&token.TrueToken{}, &token.AndToken{}, &token.TrueToken{1}}
-	tokens := []token.Token{&token.NumberToken{1}, &token.AndToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.AndToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseLogicalExp(0)
 
 	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1}), 3)) {
 
+		t.Error("Parse result did not equal the expected result")
+	}
+}
+
+func TestParseStmtTestExp(t *testing.T) {
+	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseStmt(0)
+
+	if parseResult.Equals(NewParseResult[Stmt]) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }

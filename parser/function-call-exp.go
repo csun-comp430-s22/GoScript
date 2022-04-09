@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -26,8 +25,4 @@ func (FCE *FunctionCallExp) Equals(other interface{}) bool {
 		return ok && FCE.FunctionName.Equals(asFunction.FunctionName)
 	}
 	return false
-}
-
-func (FCE *FunctionCallExp) String() string {
-	return fmt.Sprintf("FunctionCallExp(%s, %s)", FCE.FunctionName, FCE.Params)
 }
