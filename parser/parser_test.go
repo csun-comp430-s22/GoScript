@@ -611,7 +611,7 @@ func TestLogicalExpAnd(t *testing.T) {
 }
 
 func TestParseStmtTestExp(t *testing.T) {
-	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IfToken{}, &token.LeftCurlyToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseStmt(0)
