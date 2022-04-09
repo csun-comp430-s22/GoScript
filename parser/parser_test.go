@@ -28,7 +28,7 @@ func TestPlusOpExp(t *testing.T) {
 
 func TestAdditiveOpPlus(t *testing.T) {
 
-	tokens := []token.Token{&token.PlusToken{}}
+	tokens := []token.Token{&token.PlusToken{}, &token.NumberToken{Number: 1}}
 	parser := NewParser(tokens)
 	parseResult, err := parser.ParseAdditiveOp(0)
 	if err != nil {
@@ -525,12 +525,12 @@ func TestIncorrectPosition(t *testing.T) {
 }
 
 func TestAdditivePlusExp(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.PlusToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.VariableToken{"x"}, &token.EqualsToken{}, &token.NumberToken{1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseAdditiveExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1}), 3)) {
+	if parseResult.Equals(NewParseResult[Exp](NewOpExp(&VariableExp{}, &EqualsOp{}, &NumberExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
