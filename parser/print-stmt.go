@@ -18,7 +18,3 @@ func (PS *PrintStmt) Equals(other interface{}) bool {
 	otherPrintStmt, ok := reflect.Indirect(castOther).Interface().(PrintStmt)
 	return ok && reflect.TypeOf(other) == reflect.TypeOf(PS) && PS.Exp.Equals(otherPrintStmt)
 }
-
-// func (PS *PrintStmt) String() string {
-// 	return fmt.Sprintf("PrintStmt(%s)", PS.Exp)
-// }

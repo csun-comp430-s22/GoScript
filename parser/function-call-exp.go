@@ -26,7 +26,3 @@ func (FCE *FunctionCallExp) Equals(other interface{}) bool {
 	}
 	return false
 }
-
-// func (FCE *FunctionCallExp) String() string {
-// 	return fmt.Sprintf("FunctionCallExp(%s, %s)", FCE.FunctionName, FCE.Params)
-// }

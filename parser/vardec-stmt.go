@@ -21,7 +21,3 @@ func (VS *VardecStmt) Equals(other interface{}) bool {
 	}
 	return false
 }
-
-// func (VS *VardecStmt) String() string {
-// 	return fmt.Sprintf("VardecStmt(%s, %s)", VS.Vardec, VS.Exp)
-// }

@@ -21,7 +21,3 @@ func (FS *ForStmt) Equals(other interface{}) bool {
 	}
 	return false
 }
-
-// func (FS *ForStmt) String() string {
-// 	return fmt.Sprintf("ForStmt(%s, %s)", FS.Guard, FS.Body)
-// }
