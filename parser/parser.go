@@ -16,8 +16,6 @@ func NewParser(tokens []token.Token) *Parser {
 }
 
 func (p *Parser) GetToken(position int) (token.Token, error) {
-
-	fmt.Println(position)
 	// to be able to return uninitialized token as nil
 	if position >= 0 && position < len(p.Tokens) {
 		return p.Tokens[position], nil
@@ -208,19 +206,22 @@ func (p *Parser) ParseLogicalExp(position int) (*ParseResult[Exp], error) {
 }
 
 func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
+	fmt.Printf("position: %v\n", position)
+
 	tkn, err := p.GetToken(position)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("tkn: %#v\n", tkn)
+	fmt.Printf("tkn: %v\n", tkn)
 
 	if _, ok := tkn.(*token.IfToken); ok {
+
 		p.AssertTokenIsHere(position+1, &token.LeftParenToken{})
 		guard, _ := p.ParseComparisonExp(position + 2)
 		p.AssertTokenIsHere(guard.Position, &token.RightParenToken{})
 		trueBranch, _ := p.ParseStmt(guard.Position + 1)
-		p.AssertTokenIsHere(trueBranch.Position, &token.ElseToken{})
-		falseBranch, _ := p.ParseStmt(trueBranch.Position + 1)
+		p.AssertTokenIsHere(trueBranch.Position+1, &token.ElseToken{})
+		falseBranch, _ := p.ParseStmt(trueBranch.Position + 2)
 		return NewParseResult[Stmt](NewIfStmtOp(guard.Result, trueBranch.Result, falseBranch.Result), falseBranch.Position), nil
 	} else if _, ok := tkn.(*token.LeftCurlyToken); ok {
 		smts := []Stmt{}
@@ -229,16 +230,16 @@ func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
 		for shouldRun {
 			stmt, err := p.ParseStmt(currentPosition)
 			if err != nil {
-				return nil, NewParserError(err.Error())
+				shouldRun = false
+				break
 			}
 			smts = append(smts, stmt.Result)
 			currentPosition = stmt.Position
 		}
 
-		return NewParseResult[Stmt](NewBlockStmtOp(smts), currentPosition), nil
+		return NewParseResult[Stmt](NewBlockStmt(smts), currentPosition), nil
 
 	} else {
-
 		return nil, NewParserError("expected statement, received: " + tkn.String())
 	}
 }

@@ -4,7 +4,7 @@ type BlockStmt struct {
 	Stmts []Stmt
 }
 
-func NewBlockStmtOp(stmts []Stmt) *BlockStmt {
+func NewBlockStmt(stmts []Stmt) *BlockStmt {
 	return &BlockStmt{Stmts: stmts}
 }
 
