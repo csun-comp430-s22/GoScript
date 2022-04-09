@@ -11,7 +11,7 @@ type IfStmt struct {
 	FalseBranch Stmt
 }
 
-func NewIfstmtOp(guard Exp, trueBranch Stmt, falseBranch Stmt) *IfStmt {
+func NewIfStmtOp(guard Exp, trueBranch Stmt, falseBranch Stmt) *IfStmt {
 	return &IfStmt{Guard: guard, TrueBranch: trueBranch, FalseBranch: falseBranch}
 }
 
@@ -30,3 +30,5 @@ func (IS *IfStmt) Equals(other interface{}) bool {
 func (IS *IfStmt) String() string {
 	return fmt.Sprintf("IfStmt(%s, %s, %s)", IS.Guard, IS.TrueBranch, IS.FalseBranch)
 }
+
+func (is *IfStmt) stmt() {}

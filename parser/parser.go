@@ -22,14 +22,17 @@ func (p *Parser) GetToken(position int) (token.Token, error) {
 	if position >= 0 && position < len(p.Tokens) {
 		return p.Tokens[position], nil
 	} else {
-		var t token.Token
 		posStr := strconv.Itoa(position)
-		return t, NewParserError("invalid token position: " + posStr)
+		return nil, NewParserError("invalid token position: " + posStr)
 	}
 }
 
 func (p *Parser) AssertTokenIsHere(position int, expected token.Token) {
 	received, err := p.GetToken(position)
+
+	fmt.Printf("received: %#v\n", received)
+
+	fmt.Printf("expected: %#v\n", expected)
 
 	if err != nil {
 		panic(err)
@@ -40,11 +43,27 @@ func (p *Parser) AssertTokenIsHere(position int, expected token.Token) {
 	}
 }
 
-// TODO
+func (p *Parser) ParseEqualsExp(position int) (*ParseResult[Exp], error) {
+	current, _ := p.ParseComparisonExp(position)
+	shouldRun := true
 
-// func (p *Parser) ParseEqualsExp(position int) (*ParseResult[Exp], error) {
-// 	current := parsels
-// }
+	for shouldRun {
+		p.AssertTokenIsHere(current.Position, &token.EqualsToken{})
+		other, err := p.ParseComparisonExp(current.Position + 1)
+		if err != nil {
+			shouldRun = false
+			break
+		}
+		current = NewParseResult[Exp](NewOpExp(current.Result, &EqualsOp{}, other.Result), other.Position)
+
+	}
+
+	return current, nil
+}
+
+func (p *Parser) ParseExp(position int) (*ParseResult[Exp], error) {
+	return p.ParseEqualsExp(position)
+}
 
 // func (p *Parser) ParseExp(position int) (*ParseResult[Exp], error) {
 // 	return p.ParseEqualsExp(position)
@@ -188,18 +207,38 @@ func (p *Parser) ParseLogicalExp(position int) (*ParseResult[Exp], error) {
 	return current, nil
 }
 
-// func (p *Parser) ParseLessThanExp(position int) (*ParseResult[Exp], error) {
-// 	current, _ := p.ParseAdditiveExp(position)
-// 	shouldRun := true
+func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
+	tkn, err := p.GetToken(position)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("tkn: %#v\n", tkn)
 
-// 	for shouldRun {
-// 		p.AssertTokenIsHere(current.Position, &token.LesserToken{})
-// 		other, err := p.ParseAdditiveExp(current.Position + 1)
-// 		if err != nil {
-// 			shouldRun = false
-// 		}
-// 		current = NewParseResult[Exp](&OperatorExp{current.Result, &LessOp{}, other.Result}, other.Position)
-// 	}
+	if _, ok := tkn.(*token.IfToken); ok {
+		p.AssertTokenIsHere(position+1, &token.LeftParenToken{})
+		guard, _ := p.ParseComparisonExp(position + 2)
+		p.AssertTokenIsHere(guard.Position, &token.RightParenToken{})
+		trueBranch, _ := p.ParseStmt(guard.Position + 1)
+		p.AssertTokenIsHere(trueBranch.Position, &token.ElseToken{})
+		falseBranch, _ := p.ParseStmt(trueBranch.Position + 1)
+		return NewParseResult[Stmt](NewIfStmtOp(guard.Result, trueBranch.Result, falseBranch.Result), falseBranch.Position), nil
+	} else if _, ok := tkn.(*token.LeftCurlyToken); ok {
+		smts := []Stmt{}
+		currentPosition := position + 1
+		shouldRun := true
+		for shouldRun {
+			stmt, err := p.ParseStmt(currentPosition)
+			if err != nil {
+				return nil, NewParserError(err.Error())
+			}
+			smts = append(smts, stmt.Result)
+			currentPosition = stmt.Position
+		}
 
-// 	return current, nil
-// }
+		return NewParseResult[Stmt](NewBlockStmtOp(smts), currentPosition), nil
+
+	} else {
+
+		return nil, NewParserError("expected statement, received: " + tkn.String())
+	}
+}
