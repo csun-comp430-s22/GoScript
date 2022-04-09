@@ -397,19 +397,21 @@ func TestAmpersandOpAnd(t *testing.T) {
 
 }
 
-/*func TestAssignmentOp(t *testing.T) {
+func TestAssignmentOp(t *testing.T) {
 	tokens := []token.Token{&token.AssignmentToken{}}
 	parser := NewParser(tokens)
-	parseResult, err := parser.ParseAssignment(0)
+	parseResult, err := parser.ParseAdditiveOp(0)
 	if err != nil {
 		t.Error("Unexpected parser error")
 	}
 
-	if !parseResult.Equals(NewParseResult[Operator](&Assignment{}, 1)) {
+	if !parseResult.Equals(NewParseResult[Operator](&AssignmentOp{}, 1)) {
 		t.Error("Expected parse result did not equal actual")
 
 	}
-}*/
+
+}
+
 /*func TestBlockStmtOp(t *testing.T) {
 	tokens := []token.Token{&token.BlockToken{}}
 	parser := NewParser(tokens)
