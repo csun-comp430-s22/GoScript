@@ -336,7 +336,7 @@ func TestOrOpExp(t *testing.T) {
 func TestOrOpMod(t *testing.T) {
 	tokens := []token.Token{&token.OrToken{}}
 	parser := NewParser(tokens)
-	parseResult, err := parser.ParseAdditiveOp(0)
+	parseResult, err := parser.ParseLogicalOp(0)
 	if err != nil {
 		t.Error("Unexpected parser error")
 	}
@@ -385,7 +385,7 @@ func TestAndOp(t *testing.T) {
 func TestAmpersandOpAnd(t *testing.T) {
 	tokens := []token.Token{&token.AndToken{}}
 	parser := NewParser(tokens)
-	parseResult, err := parser.ParseAdditiveOp(0)
+	parseResult, err := parser.ParseLogicalOp(0)
 	if err != nil {
 		t.Error("Unexpected parser error")
 	}
