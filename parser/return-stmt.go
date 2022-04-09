@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -19,6 +18,6 @@ func (RS *ReturnStmt) Equals(other interface{}) bool {
 	return ok && reflect.TypeOf(other) == reflect.TypeOf(RS) && RS.Exp.Equals(otherReturnStmt)
 }
 
-func (RS *ReturnStmt) String() string {
-	return fmt.Sprintf("Return(%s)", RS.Exp)
-}
+// func (RS *ReturnStmt) String() string {
+// 	return fmt.Sprintf("Return(%s)", RS.Exp)
+// }

@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -27,8 +26,8 @@ func (IS *IfStmt) Equals(other interface{}) bool {
 	return false
 }
 
-func (IS *IfStmt) String() string {
-	return fmt.Sprintf("IfStmt(%s, %s, %s)", IS.Guard, IS.TrueBranch, IS.FalseBranch)
-}
+// func (IS *IfStmt) String() string {
+// 	return fmt.Sprintf("IfStmt(%s, %s, %s)", IS.Guard, IS.TrueBranch, IS.FalseBranch)
+// }
 
 func (is *IfStmt) stmt() {}

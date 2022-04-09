@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -28,8 +27,8 @@ func (oe *OperatorExp) Equals(other interface{}) bool {
 
 }
 
-func (oe *OperatorExp) String() string {
-	return fmt.Sprintf("OperatorExp(%s, %s, %s)", oe.Left, oe.Op, oe.Right)
-}
+// func (oe *OperatorExp) String() string {
+// 	return fmt.Sprintf("OperatorExp(%s, %s, %s)", oe.Left, oe.Op, oe.Right)
+// }
 
 func (oe *OperatorExp) exp() {}

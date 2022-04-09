@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -19,6 +18,6 @@ func (VD *Vardec) Equals(other interface{}) bool {
 	return ok && reflect.TypeOf(other) == reflect.TypeOf(VD) && VD.Name == otherVardec.Name
 }
 
-func (VD *Vardec) String() string {
-	return fmt.Sprintf("Vardec(%s)", VD.Name)
-}
+// func (VD *Vardec) String() string {
+// 	return fmt.Sprintf("Vardec(%s)", VD.Name)
+// }

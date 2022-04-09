@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -19,8 +18,8 @@ func (VE *VariableExp) Equals(other interface{}) bool {
 	return ok && reflect.TypeOf(other) == reflect.TypeOf(VE) && otherVariableExp.Variable.Equals(VE.Variable)
 }
 
-func (VE *VariableExp) String() string {
-	return fmt.Sprintf("VariableExp(%s)", VE.Variable)
-}
+// func (VE *VariableExp) String() string {
+// 	return fmt.Sprintf("VariableExp(%s)", VE.Variable)
+// }
 
 func (ve *VariableExp) exp() {}

@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -20,6 +19,6 @@ func (PS *PrintStmt) Equals(other interface{}) bool {
 	return ok && reflect.TypeOf(other) == reflect.TypeOf(PS) && PS.Exp.Equals(otherPrintStmt)
 }
 
-func (PS *PrintStmt) String() string {
-	return fmt.Sprintf("PrintStmt(%s)", PS.Exp)
-}
+// func (PS *PrintStmt) String() string {
+// 	return fmt.Sprintf("PrintStmt(%s)", PS.Exp)
+// }
