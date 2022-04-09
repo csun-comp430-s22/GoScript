@@ -525,7 +525,7 @@ func TestIncorrectPosition(t *testing.T) {
 }
 
 func TestAdditivePlusExp(t *testing.T) {
-	tokens := []token.Token{&token.VariableToken{"x"}, &token.EqualsToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseAdditiveExp(0)
@@ -536,7 +536,7 @@ func TestAdditivePlusExp(t *testing.T) {
 }
 
 func TestAdditiveExp(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.PlusToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.PlusToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseAdditiveExp(0)
@@ -547,7 +547,7 @@ func TestAdditiveExp(t *testing.T) {
 }
 
 func TestComparisonExpLess(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.LesserToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.LesserToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
@@ -558,7 +558,7 @@ func TestComparisonExpLess(t *testing.T) {
 }
 
 func TestComparisonExpGreater(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.GreaterToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.GreaterToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
@@ -569,7 +569,7 @@ func TestComparisonExpGreater(t *testing.T) {
 }
 
 func TestComparisonExpEquals(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.EqualsToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
@@ -580,7 +580,7 @@ func TestComparisonExpEquals(t *testing.T) {
 }
 
 func TestComparisonExpNotEquals(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.NotEqualsToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.NotEqualsToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
@@ -599,7 +599,7 @@ func TestComparisonExpNotEquals(t *testing.T) {
 
 func TestLogicalExpAnd(t *testing.T) {
 	// tokens := []token.Token{&token.TrueToken{}, &token.AndToken{}, &token.TrueToken{1}}
-	tokens := []token.Token{&token.NumberToken{1}, &token.AndToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.AndToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseLogicalExp(0)
@@ -611,7 +611,7 @@ func TestLogicalExpAnd(t *testing.T) {
 }
 
 func TestParseStmtTestExp(t *testing.T) {
-	tokens := []token.Token{&token.VariableToken{"x"}, &token.EqualsToken{}, &token.NumberToken{1}}
+	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseStmt(0)
