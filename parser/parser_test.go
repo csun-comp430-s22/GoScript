@@ -396,3 +396,94 @@ func TestAmpersandOpAnd(t *testing.T) {
 	}
 
 }
+
+/*func TestAssignmentOp(t *testing.T) {
+	tokens := []token.Token{&token.AssignmentToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseAssignment(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&Assignment{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
+	}
+}*/
+/*func TestBlockStmtOp(t *testing.T) {
+	tokens := []token.Token{&token.BlockToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseBlockStmt(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&BlockStmt{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
+	}
+}*/
+func TestGreaterThanOp(t *testing.T) {
+	first := NewOpExp(&NumberExp{1}, &GreaterOp{}, &NumberExp{1})
+	second := NewOpExp(&NumberExp{1}, &GreaterOp{}, &NumberExp{1})
+	third := NewOpExp(&NumberExp{1}, &GreaterOp{}, &NumberExp{2})
+
+	fmt.Printf("%#v, %#v", first, second)
+	if !first.Equals(second) {
+		t.Error("Expected first and second operator expression to be equal")
+	}
+	if !first.Equals(first) {
+		t.Error("Expected first operator expression to be equal to itself")
+	}
+	if first.Equals(third) {
+		t.Error("Expected first operator expression not to be equal to third")
+	}
+}
+func TestLessEqualOp(t *testing.T) {
+	first := NewOpExp(&NumberExp{1}, &LessEqualOp{}, &NumberExp{1})
+	second := NewOpExp(&NumberExp{1}, &LessEqualOp{}, &NumberExp{1})
+	third := NewOpExp(&NumberExp{1}, &LessEqualOp{}, &NumberExp{2})
+
+	fmt.Printf("%#v, %#v", first, second)
+	if !first.Equals(second) {
+		t.Error("Expected first and second operator expression to be equal")
+	}
+	if !first.Equals(first) {
+		t.Error("Expected first operator expression to be equal to itself")
+	}
+	if first.Equals(third) {
+		t.Error("Expected first operator expression not to be equal to third")
+	}
+}
+func TestGreaterEqualOp(t *testing.T) {
+	first := NewOpExp(&NumberExp{1}, &GreaterEqualOp{}, &NumberExp{1})
+	second := NewOpExp(&NumberExp{1}, &GreaterEqualOp{}, &NumberExp{1})
+	third := NewOpExp(&NumberExp{1}, &GreaterEqualOp{}, &NumberExp{2})
+
+	fmt.Printf("%#v, %#v", first, second)
+	if !first.Equals(second) {
+		t.Error("Expected first and second operator expression to be equal")
+	}
+	if !first.Equals(first) {
+		t.Error("Expected first operator expression to be equal to itself")
+	}
+	if first.Equals(third) {
+		t.Error("Expected first operator expression not to be equal to third")
+	}
+}
+func TestNegateOp(t *testing.T) {
+	first := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{1})
+	second := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{1})
+	third := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{2})
+
+	fmt.Printf("%#v, %#v", first, second)
+	if !first.Equals(second) {
+		t.Error("Expected first and second operator expression to be equal")
+	}
+	if !first.Equals(first) {
+		t.Error("Expected first operator expression to be equal to itself")
+	}
+	if first.Equals(third) {
+		t.Error("Expected first operator expression not to be equal to third")
+	}
+}
