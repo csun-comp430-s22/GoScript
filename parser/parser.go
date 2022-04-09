@@ -83,6 +83,8 @@ func (p *Parser) ParseAdditiveOp(position int) (*ParseResult[Operator], error) {
 		return NewParseResult[Operator](&PipeOp{}, position+1), nil
 	} else if _, ok := tkn.(*token.OrToken); ok {
 		return NewParseResult[Operator](&OrOp{}, position+1), nil
+	} else if _, ok := tkn.(*token.AndToken); ok {
+		return NewParseResult[Operator](&AndOp{}, position+1), nil
 	} else {
 		return nil, NewParserError("err")
 	}
