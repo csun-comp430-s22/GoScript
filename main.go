@@ -27,18 +27,15 @@ func main() {
 
 	// fmt.Printf("one.Equals(two): %v\n", one.Equals(two))
 
-	tokens := []token.Token{&token.NumberToken{1}, &token.LesserToken{}, &token.NumberToken{2}}
-
+	tokens := []token.Token{&token.NumberToken{1}, &token.AndToken{}, &token.NumberToken{1}}
 	p := parser.NewParser(tokens)
 
-	parseResult, _ := p.ParseComparisonExp(0)
+	parseResult, _ := p.ParseLogicalExp(0)
 
-	expected := parser.NewParseResult(parser.NewOpExp(&parser.NumberExp{1}, &parser.LessOp{}, &parser.NumberExp{2}), 3)
+	exp := parser.NewParseResult[parser.Exp](parser.NewOpExp(&parser.NumberExp{1}, &parser.AndOp{}, &parser.NumberExp{1}), 3)
 
-	fmt.Printf("parseResult: %#v\n", parseResult)
-	fmt.Printf("parseResult.Result: %v\n", parseResult.Result)
-	fmt.Printf("expected.Result: %v\n", expected.Result)
-	fmt.Printf("expected: %#v\n", expected)
+	fmt.Printf("parseResult: %v\n", parseResult)
+	fmt.Printf("exp: %v\n", exp)
 
-	parseResult.Equals(expected)
+	fmt.Printf("parseResult.Equals(exp): %v\n", parseResult.Equals(exp))
 }

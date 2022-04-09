@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/vSterlin/goscript/token"
@@ -16,6 +17,7 @@ func NewParser(tokens []token.Token) *Parser {
 
 func (p *Parser) GetToken(position int) (token.Token, error) {
 
+	fmt.Println(position)
 	// to be able to return uninitialized token as nil
 	if position >= 0 && position < len(p.Tokens) {
 		return p.Tokens[position], nil
@@ -149,7 +151,9 @@ func (p *Parser) ParseComparisonExp(position int) (*ParseResult[Exp], error) {
 }
 
 func (p *Parser) ParseLogicalOp(position int) (*ParseResult[Operator], error) {
-	tkn, _ := p.GetToken(position)
+	tkn, err := p.GetToken(position)
+
+	fmt.Println(err)
 
 	if _, ok := tkn.(*token.AndToken); ok {
 		return NewParseResult[Operator](&AndOp{}, position+1), nil
@@ -163,19 +167,25 @@ func (p *Parser) ParseLogicalOp(position int) (*ParseResult[Operator], error) {
 }
 
 func (p *Parser) ParseLogicalExp(position int) (*ParseResult[Exp], error) {
-	comparison, err := p.ParseAdditiveExp(position)
-	if err != nil {
-		return nil, NewParserError(err.Error())
+	current, _ := p.ParsePrimaryExp(position)
+	shouldRun := true
+
+	for shouldRun {
+		logicalOp, err := p.ParseAdditiveOp(current.Position)
+		if err != nil {
+			shouldRun = false
+			break
+		}
+		anotherPrimary, err := p.ParsePrimaryExp(logicalOp.Position)
+		if err != nil {
+			shouldRun = false
+			break
+		}
+		current = NewParseResult[Exp](NewOpExp(current.Result, logicalOp.Result, anotherPrimary.Result), anotherPrimary.Position)
+
 	}
-	logicalOp, err := p.ParseLogicalOp(comparison.Position)
-	if err != nil {
-		return nil, NewParserError(err.Error())
-	}
-	secComparison, err := p.ParseAdditiveExp(logicalOp.Position)
-	if err != nil {
-		return nil, NewParserError(err.Error())
-	}
-	return NewParseResult[Exp](NewOpExp(comparison.Result, logicalOp.Result, secComparison.Result), secComparison.Position), nil
+
+	return current, nil
 }
 
 // func (p *Parser) ParseLessThanExp(position int) (*ParseResult[Exp], error) {
