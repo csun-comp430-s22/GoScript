@@ -609,3 +609,14 @@ func TestLogicalExpAnd(t *testing.T) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
+
+func TestParseStmtTestExp(t *testing.T) {
+	tokens := []token.Token{&token.VariableToken{"x"}, &token.EqualsToken{}, &token.NumberToken{1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseStmt(0)
+
+	if parseResult.Equals(NewParseResult[Stmt]) {
+		t.Error("Parse result did not equal the expected result")
+	}
+}
