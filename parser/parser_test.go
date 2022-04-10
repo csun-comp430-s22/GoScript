@@ -590,6 +590,17 @@ func TestComparisonExpNotEquals(t *testing.T) {
 	}
 }
 
+func TestComparisonExpInvalid(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.NegateToken{}, &token.NumberToken{Number: 1}}
+
+	parser := NewParser(tokens)
+	_, err := parser.ParseComparisonExp(0)
+
+	if err == nil {
+		t.Error("Expected error, got nil")
+	}
+}
+
 // if _, ok := tkn.(*token.AndToken); ok {
 // 	return NewParseResult[Operator](&AndOp{}, position+1), nil
 // } else if _, ok := tkn.(*token.OrToken); ok {
