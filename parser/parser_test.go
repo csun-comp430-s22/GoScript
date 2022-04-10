@@ -590,7 +590,7 @@ func TestComparisonExpNotEquals(t *testing.T) {
 	}
 }
 
-func TestComparisonExpInvalid(t *testing.T) {
+func TestComparisonOpInvalid(t *testing.T) {
 	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.NegateToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
