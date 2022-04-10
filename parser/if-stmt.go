@@ -10,7 +10,7 @@ type IfStmt struct {
 	FalseBranch Stmt
 }
 
-func NewIfStmtOp(guard Exp, trueBranch Stmt, falseBranch Stmt) *IfStmt {
+func NewIfStmt(guard Exp, trueBranch Stmt, falseBranch Stmt) *IfStmt {
 	return &IfStmt{Guard: guard, TrueBranch: trueBranch, FalseBranch: falseBranch}
 }
 

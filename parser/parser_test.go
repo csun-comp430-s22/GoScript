@@ -620,3 +620,32 @@ func TestParseStmtTestExp(t *testing.T) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
+
+func TestIfElseStmt(t *testing.T) {
+	tokens := []token.Token{
+		&token.IfToken{},
+		&token.LeftParenToken{},
+		&token.NumberToken{1},
+		&token.EqualsToken{},
+		&token.NumberToken{1},
+		&token.RightParenToken{},
+		&token.LeftCurlyToken{},
+		&token.RightCurlyToken{},
+		&token.ElseToken{},
+		&token.LeftCurlyToken{},
+		&token.RightCurlyToken{},
+	}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseStmt(0)
+
+	expected := NewParseResult[Stmt](NewIfStmt(
+		NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1}),
+		NewBlockStmt([]Stmt{}),
+		NewBlockStmt([]Stmt{}),
+	), 10)
+
+	if !parseResult.Equals(expected) {
+		t.Error("expected parse result does not equal actual")
+	}
+}

@@ -222,7 +222,7 @@ func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
 		trueBranch, _ := p.ParseStmt(guard.Position + 1)
 		p.AssertTokenIsHere(trueBranch.Position+1, &token.ElseToken{})
 		falseBranch, _ := p.ParseStmt(trueBranch.Position + 2)
-		return NewParseResult[Stmt](NewIfStmtOp(guard.Result, trueBranch.Result, falseBranch.Result), falseBranch.Position), nil
+		return NewParseResult[Stmt](NewIfStmt(guard.Result, trueBranch.Result, falseBranch.Result), falseBranch.Position), nil
 	} else if _, ok := tkn.(*token.LeftCurlyToken); ok {
 		smts := []Stmt{}
 		currentPosition := position + 1
