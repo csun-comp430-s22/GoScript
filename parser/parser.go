@@ -215,14 +215,8 @@ func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
 	fmt.Printf("tkn: %v\n", tkn)
 
 	if _, ok := tkn.(*token.IfToken); ok {
+		return p.parseSelectionStatement(position)
 
-		p.AssertTokenIsHere(position+1, &token.LeftParenToken{})
-		guard, _ := p.ParseComparisonExp(position + 2)
-		p.AssertTokenIsHere(guard.Position, &token.RightParenToken{})
-		trueBranch, _ := p.ParseStmt(guard.Position + 1)
-		p.AssertTokenIsHere(trueBranch.Position+1, &token.ElseToken{})
-		falseBranch, _ := p.ParseStmt(trueBranch.Position + 2)
-		return NewParseResult[Stmt](NewIfStmt(guard.Result, trueBranch.Result, falseBranch.Result), falseBranch.Position), nil
 	} else if _, ok := tkn.(*token.LeftCurlyToken); ok {
 		smts := []Stmt{}
 		currentPosition := position + 1
@@ -242,4 +236,19 @@ func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
 	} else {
 		return nil, NewParserError("expected statement, received: " + tkn.String())
 	}
+}
+
+// if (exp) stmt | if (exp) stmt else stmt
+func (p *Parser) parseSelectionStatement(position int) (*ParseResult[Stmt], error) {
+	p.AssertTokenIsHere(position+1, &token.LeftParenToken{})
+	guard, _ := p.ParseComparisonExp(position + 2)
+	p.AssertTokenIsHere(guard.Position, &token.RightParenToken{})
+	trueBranch, _ := p.ParseStmt(guard.Position + 1)
+	tkn, _ := p.GetToken(trueBranch.Position + 1)
+	if _, ok := (tkn).(*token.ElseToken); ok {
+		falseBranch, _ := p.ParseStmt(trueBranch.Position + 2)
+		return NewParseResult[Stmt](NewIfElseStmt(guard.Result, trueBranch.Result, falseBranch.Result), falseBranch.Position), nil
+	}
+
+	return NewParseResult[Stmt](NewIfStmt(guard.Result, trueBranch.Result), trueBranch.Position), nil
 }

@@ -621,6 +621,30 @@ func TestParseStmtTestExp(t *testing.T) {
 	}
 }
 
+func TestIfStmt(t *testing.T) {
+	tokens := []token.Token{
+		&token.IfToken{},
+		&token.LeftParenToken{},
+		&token.NumberToken{1},
+		&token.EqualsToken{},
+		&token.NumberToken{1},
+		&token.RightParenToken{},
+		&token.LeftCurlyToken{},
+		&token.RightCurlyToken{},
+	}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseStmt(0)
+
+	expected := NewParseResult[Stmt](NewIfStmt(
+		NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1}),
+		NewBlockStmt([]Stmt{})), 7)
+
+	if !parseResult.Equals(expected) {
+		t.Error("expected parse result does not equal actual")
+	}
+}
+
 func TestIfElseStmt(t *testing.T) {
 	tokens := []token.Token{
 		&token.IfToken{},
@@ -639,7 +663,7 @@ func TestIfElseStmt(t *testing.T) {
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseStmt(0)
 
-	expected := NewParseResult[Stmt](NewIfStmt(
+	expected := NewParseResult[Stmt](NewIfElseStmt(
 		NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1}),
 		NewBlockStmt([]Stmt{}),
 		NewBlockStmt([]Stmt{}),
