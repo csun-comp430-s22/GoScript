@@ -590,6 +590,17 @@ func TestComparisonExpNotEquals(t *testing.T) {
 	}
 }
 
+func TestComparisonOpInvalid(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.NegateToken{}, &token.NumberToken{Number: 1}}
+
+	parser := NewParser(tokens)
+	_, err := parser.ParseComparisonExp(0)
+
+	if err == nil {
+		t.Error("Expected error, got nil")
+	}
+}
+
 // if _, ok := tkn.(*token.AndToken); ok {
 // 	return NewParseResult[Operator](&AndOp{}, position+1), nil
 // } else if _, ok := tkn.(*token.OrToken); ok {
@@ -598,7 +609,6 @@ func TestComparisonExpNotEquals(t *testing.T) {
 // 	return NewParseResult[Operator](&NegateOp{}, position+1), nil
 
 func TestLogicalExpAnd(t *testing.T) {
-	// tokens := []token.Token{&token.TrueToken{}, &token.AndToken{}, &token.TrueToken{1}}
 	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.AndToken{}, &token.NumberToken{Number: 1}}
 
 	parser := NewParser(tokens)
@@ -606,6 +616,31 @@ func TestLogicalExpAnd(t *testing.T) {
 
 	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1}), 3)) {
 
+		t.Error("Parse result did not equal the expected result")
+	}
+}
+
+func TestLogicalOpOr(t *testing.T) {
+	tokens := []token.Token{&token.OrToken{}}
+	parser := NewParser(tokens)
+	parseResult, err := parser.ParseLogicalOp(0)
+	if err != nil {
+		t.Error("Unexpected parser error")
+	}
+
+	if !parseResult.Equals(NewParseResult[Operator](&OrOp{}, 1)) {
+		t.Error("Expected parse result did not equal actual")
+
+	}
+}
+
+func TestLogicalExpOr(t *testing.T) {
+	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.OrToken{}, &token.NumberToken{Number: 1}}
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseLogicalExp(0)
+
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &OrOp{}, &NumberExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
@@ -649,9 +684,9 @@ func TestIfElseStmt(t *testing.T) {
 	tokens := []token.Token{
 		&token.IfToken{},
 		&token.LeftParenToken{},
-		&token.NumberToken{1},
+		&token.NumberToken{Number: 1},
 		&token.EqualsToken{},
-		&token.NumberToken{1},
+		&token.NumberToken{Number: 1},
 		&token.RightParenToken{},
 		&token.LeftCurlyToken{},
 		&token.RightCurlyToken{},
