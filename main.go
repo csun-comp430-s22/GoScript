@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/vSterlin/goscript/parser"
 	"github.com/vSterlin/goscript/token"
 )
 
@@ -16,19 +15,19 @@ func main() {
 
 	// fmt.Printf("one.Equals(two): %v\n", one.Equals(two))
 
-	tokens := []token.Token{
-		&token.IfToken{},
-		&token.LeftParenToken{},
-		&token.NumberToken{1},
-		&token.EqualsToken{},
-		&token.NumberToken{1},
-		&token.RightParenToken{},
-		&token.LeftCurlyToken{},
-		&token.RightCurlyToken{},
-		&token.ElseToken{},
-		&token.LeftCurlyToken{},
-		&token.RightCurlyToken{},
-	}
+	// tokens := []token.Token{
+	// 	&token.IfToken{},
+	// 	&token.LeftParenToken{},
+	// 	&token.NumberToken{1},
+	// 	&token.EqualsToken{},
+	// 	&token.NumberToken{1},
+	// 	&token.RightParenToken{},
+	// 	&token.LeftCurlyToken{},
+	// 	&token.RightCurlyToken{},
+	// 	&token.ElseToken{},
+	// 	&token.LeftCurlyToken{},
+	// 	&token.RightCurlyToken{},
+	// }
 
 	// tokens := []token.Token{
 	// 	&token.LeftCurlyToken{},
@@ -37,11 +36,13 @@ func main() {
 
 	// tokens := []token.Token{&token.NumberToken{1}, &token.EqualsToken{}, &token.NumberToken{1}}
 
-	p := parser.NewParser(tokens)
+	tokenizer := token.NewTokenizer("fn int abcefg(lol int){}")
+	tokens := tokenizer.Tokenize()
 
-	res, err := p.ParseStmt(0)
+	for _, t := range tokens {
+		fmt.Printf("%#v\n", t)
+	}
 
-	fmt.Printf("res: %#v\n", res.Result)
-	fmt.Printf("err: %v\n", err)
+	// fmt.Printf("tokens: %v\n", tokens)
 
 }

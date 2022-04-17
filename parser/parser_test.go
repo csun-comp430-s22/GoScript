@@ -8,6 +8,12 @@ import (
 	"github.com/vSterlin/goscript/token"
 )
 
+// helper to take string and return tokens
+func tokenize(input string) []token.Token {
+	tokenizer := token.NewTokenizer(input)
+	return tokenizer.Tokenize()
+}
+
 func TestPlusOpExp(t *testing.T) {
 	first := NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1})
 	second := NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1})
@@ -707,4 +713,23 @@ func TestIfElseStmt(t *testing.T) {
 	if !parseResult.Equals(expected) {
 		t.Error("expected parse result does not equal actual")
 	}
+}
+
+func TestFunctionDefinitionStmt(t *testing.T) {
+
+	tokens := tokenize("fn")
+
+	parser := NewParser(tokens)
+	parseResult, _ := parser.parseFunctionDefinition(0)
+	t.Logf("%#v", parseResult)
+
+	expected := NewParseResult[Stmt](NewFunctionDef(*NewFunctionName("lol"),
+		[]Vardec{{Name: "abc"}},
+		NewBlockStmt([]Stmt{}),
+		&IntType{},
+	), 0)
+
+	t.Errorf("%#v", parseResult)
+	t.Errorf("%#v", expected)
+
 }

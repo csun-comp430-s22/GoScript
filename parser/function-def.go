@@ -35,3 +35,5 @@ func equalVardecs(a []Vardec, b []Vardec) bool {
 	}
 	return true
 }
+
+func (fd *FunctionDef) stmt() {}

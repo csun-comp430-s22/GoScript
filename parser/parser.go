@@ -187,10 +187,13 @@ func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
 	}
 	fmt.Printf("tkn: %v\n", tkn)
 
+	// position will be moved inside the parser function to next or next after usually
 	if _, ok := tkn.(*token.IfToken); ok {
 		return p.parseSelectionStmt(position)
 	} else if _, ok := tkn.(*token.LeftCurlyToken); ok {
 		return p.parseBlockStmt(position)
+	} else if _, ok := tkn.(*token.FnToken); ok {
+		return p.parseFunctionDefinition(position)
 	} else {
 		return nil, NewParserError("expected statement, received: " + tkn.String())
 	}
@@ -224,4 +227,29 @@ func (p *Parser) parseBlockStmt(position int) (*ParseResult[Stmt], error) {
 		currentPosition = stmt.Position
 	}
 	return NewParseResult[Stmt](NewBlockStmt(smts), currentPosition), nil
+}
+
+func (p *Parser) parseType(position int) (*ParseResult[Type], error) {
+	tkn, err := p.GetToken(position)
+
+	fmt.Println(err)
+
+	if _, ok := tkn.(*token.IntToken); ok {
+		return NewParseResult[Type](&IntType{}, position+1), nil
+	} else {
+		return nil, NewParserError("super descritptive error")
+	}
+
+}
+
+func (p *Parser) parseFunctionDefinition(position int) (*ParseResult[Stmt], error) {
+	fmt.Println("FUNCTION")
+
+	returnTypeTkn, err := p.parseType(position + 1)
+	if err != nil {
+		return nil, NewParserError("expected type here")
+	}
+	// funcNameTkn, err := p.parse
+
+	return nil, nil
 }
