@@ -2,6 +2,7 @@ package parser
 
 type Program struct {
 	Stmts Stmt
+	Node
 }
 
 func NewProgram(stmts Stmt) *Program {

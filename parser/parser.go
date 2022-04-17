@@ -255,3 +255,21 @@ func (p *Parser) parseFunctionDefinition(position int) (*ParseResult[Stmt], erro
 
 	return nil, nil
 }
+
+// got stuck here
+
+// func (p *Parser) parseAProgram(position int) (*ParseResult[Program], error) {
+// 	stmt, _ := p.ParseStmt(position)
+
+// 	return NewParseResult[Program](NewProgram(stmt.Result), stmt.Position), nil
+// }
+
+// func (p *Parser) parseProgram() Program {
+// 	program, _ := p.parseAProgram(0)
+
+// 	if program.Position == len(p.Tokens) {
+// 		return program.Result
+// 	} else {
+// 		panic("Remaining tokens at end")
+// 	}
+// }
