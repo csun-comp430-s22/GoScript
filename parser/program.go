@@ -8,3 +8,5 @@ type Program struct {
 func NewProgram(stmts Stmt) *Program {
 	return &Program{Stmts: stmts}
 }
+
+func (p *Program) stmt() {}
