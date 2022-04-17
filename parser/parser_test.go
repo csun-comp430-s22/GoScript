@@ -715,21 +715,18 @@ func TestIfElseStmt(t *testing.T) {
 	}
 }
 
-func TestFunctionDefinitionStmt(t *testing.T) {
+// func TestFunctionDefinitionStmt(t *testing.T) {
 
-	tokens := tokenize("fn")
+// 	tokens := tokenize("fn")
 
-	parser := NewParser(tokens)
-	parseResult, _ := parser.parseFunctionDefinition(0)
-	t.Logf("%#v", parseResult)
+// 	parser := NewParser(tokens)
+// 	parseResult, _ := parser.parseFunctionDefinition(0)
+// 	t.Logf("%#v", parseResult)
 
-	expected := NewParseResult[Stmt](NewFunctionDef(*NewFunctionName("lol"),
-		[]Vardec{{Name: "abc"}},
-		NewBlockStmt([]Stmt{}),
-		&IntType{},
-	), 0)
+// 	expected := NewParseResult[Stmt](NewFunctionDef(*NewFunctionName("lol"),
+// 		[]Vardec{{Name: "abc"}},
+// 		NewBlockStmt([]Stmt{}),
+// 		&IntType{},
+// 	), 0)
 
-	t.Errorf("%#v", parseResult)
-	t.Errorf("%#v", expected)
-
-}
+// }
