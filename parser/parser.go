@@ -245,10 +245,12 @@ func (p *Parser) parseType(position int) (*ParseResult[Type], error) {
 func (p *Parser) parseFunctionDefinition(position int) (*ParseResult[Stmt], error) {
 	fmt.Println("FUNCTION")
 
-	returnTypeTkn, err := p.parseType(position + 1)
-	if err != nil {
-		return nil, NewParserError("expected type here")
-	}
+	// returnTypeTkn, err := p.parseType(position + 1)
+	// if err != nil {
+	// 	return nil, NewParserError("expected type here")
+	// }
+
+	// need to define some parseFuncname function
 	// funcNameTkn, err := p.parse
 
 	return nil, nil
