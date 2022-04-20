@@ -262,19 +262,17 @@ func (p *Parser) parseFunctionDefinition(position int) (*ParseResult[Stmt], erro
 	return nil, nil
 }
 
-// got stuck here
-
-func (p *Parser) parseProgram(position int) (*ParseResult[Stmt], error) {
+func (p *Parser) parseProgram(position int) (*ParseResult[*Program], error) {
 	stmt, _ := p.ParseStmt(position)
 
-	return NewParseResult[Stmt](NewProgram(stmt.Result), stmt.Position), nil
+	return NewParseResult(NewProgram(stmt.Result), stmt.Position), nil
 }
 
-func (p *Parser) ParseProgram() (*ParseResult[Stmt], error) {
+func (p *Parser) ParseProgram() (*Program, error) {
 	program, _ := p.parseProgram(0)
 
 	if program.Position == len(p.Tokens)-1 {
-		return program, nil
+		return program.Result, nil
 	} else {
 		panic("Remaining tokens at end")
 	}
