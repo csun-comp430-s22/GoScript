@@ -687,19 +687,7 @@ func TestIfStmt(t *testing.T) {
 }
 
 func TestIfElseStmt(t *testing.T) {
-	tokens := []token.Token{
-		&token.IfToken{},
-		&token.LeftParenToken{},
-		&token.NumberToken{Number: 1},
-		&token.EqualsToken{},
-		&token.NumberToken{Number: 1},
-		&token.RightParenToken{},
-		&token.LeftCurlyToken{},
-		&token.RightCurlyToken{},
-		&token.ElseToken{},
-		&token.LeftCurlyToken{},
-		&token.RightCurlyToken{},
-	}
+	tokens := tokenize("if(1==1){} else{}")
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseStmt(0)
@@ -713,6 +701,16 @@ func TestIfElseStmt(t *testing.T) {
 	if !parseResult.Equals(expected) {
 		t.Error("expected parse result does not equal actual")
 	}
+}
+
+func TestProgram(t *testing.T) {
+	tokens := tokenize("{}")
+
+	parser := NewParser(tokens)
+	if parseResult, err := parser.ParseProgram(); parseResult == nil || err != nil {
+		t.Fatalf("program did not parse")
+	}
+
 }
 
 // func TestFunctionDefinitionStmt(t *testing.T) {

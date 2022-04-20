@@ -28,9 +28,9 @@ func (p *Parser) GetToken(position int) (token.Token, error) {
 func (p *Parser) AssertTokenIsHere(position int, expected token.Token) {
 	received, err := p.GetToken(position)
 
-	fmt.Printf("received: %#v\n", received)
+	// fmt.Printf("received: %#v\n", received)
 
-	fmt.Printf("expected: %#v\n", expected)
+	// fmt.Printf("expected: %#v\n", expected)
 
 	if err != nil {
 		panic(err)
@@ -179,13 +179,13 @@ func (p *Parser) ParseLogicalExp(position int) (*ParseResult[Exp], error) {
 }
 
 func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
-	fmt.Printf("position: %v\n", position)
+	// fmt.Printf("position: %v\n", position)
 
 	tkn, err := p.GetToken(position)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("tkn: %v\n", tkn)
+	// fmt.Printf("tkn: %v\n", tkn)
 
 	// position will be moved inside the parser function to next or next after usually
 	if _, ok := tkn.(*token.IfToken); ok {
@@ -218,6 +218,11 @@ func (p *Parser) parseBlockStmt(position int) (*ParseResult[Stmt], error) {
 	currentPosition := position + 1
 	shouldRun := true
 	for shouldRun {
+		// tkn, _ := p.GetToken(position)
+		// if _, ok := tkn.(*token.RightCurlyToken); ok {
+		// 	currentPosition += 1
+		// }
+
 		stmt, err := p.ParseStmt(currentPosition)
 		if err != nil {
 			shouldRun = false
@@ -226,6 +231,7 @@ func (p *Parser) parseBlockStmt(position int) (*ParseResult[Stmt], error) {
 		smts = append(smts, stmt.Result)
 		currentPosition = stmt.Position
 	}
+	fmt.Printf("currentPosition: %v\n", currentPosition)
 	return NewParseResult[Stmt](NewBlockStmt(smts), currentPosition), nil
 }
 
@@ -258,16 +264,16 @@ func (p *Parser) parseFunctionDefinition(position int) (*ParseResult[Stmt], erro
 
 // got stuck here
 
-func (p *Parser) parseAProgram(position int) (*ParseResult[Stmt], error) {
+func (p *Parser) parseProgram(position int) (*ParseResult[Stmt], error) {
 	stmt, _ := p.ParseStmt(position)
 
 	return NewParseResult[Stmt](NewProgram(stmt.Result), stmt.Position), nil
 }
 
-func (p *Parser) parseProgram() (*ParseResult[Stmt], error) {
-	program, _ := p.parseAProgram(0)
+func (p *Parser) ParseProgram() (*ParseResult[Stmt], error) {
+	program, _ := p.parseProgram(0)
 
-	if program.Position == len(p.Tokens) {
+	if program.Position == len(p.Tokens)-1 {
 		return program, nil
 	} else {
 		panic("Remaining tokens at end")

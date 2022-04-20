@@ -1,12 +1,16 @@
 package parser
 
 type Program struct {
-	Stmts Stmt
+	Stmt Stmt
 	Node
 }
 
-func NewProgram(stmts Stmt) *Program {
-	return &Program{Stmts: stmts}
+func NewProgram(stmt Stmt) *Program {
+	return &Program{Stmt: stmt}
+}
+
+func (p *Program) Equals(other any) bool {
+	return true
 }
 
 func (p *Program) stmt() {}
