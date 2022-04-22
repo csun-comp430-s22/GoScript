@@ -36,7 +36,9 @@ func main() {
 
 	// tokens := []token.Token{&token.NumberToken{1}, &token.EqualsToken{}, &token.NumberToken{1}}
 
-	tokenizer := token.NewTokenizer("fn int abcefg(lol int){}")
+	// tokenizer := token.NewTokenizer("fn int abcefg(lol int){}")
+	tokenizer := token.NewTokenizer("{1}")
+
 	tokens := tokenizer.Tokenize()
 
 	for _, t := range tokens {

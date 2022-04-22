@@ -82,7 +82,7 @@ func (t *Tokenizer) IsTokenString(input string) bool {
 	return ok
 }
 
-func (t *Tokenizer) tryTokenizeNumber() *NumberToken {
+func (t *Tokenizer) tryTokenizeInt() *IntLiteralToken {
 	var initialInputPos int = t.inputPos
 	var digits string = ""
 
@@ -102,7 +102,7 @@ func (t *Tokenizer) tryTokenizeNumber() *NumberToken {
 		if err != nil {
 			panic(err)
 		}
-		return &NumberToken{num}
+		return &IntLiteralToken{num}
 	} else {
 		t.inputPos = initialInputPos
 		return nil
@@ -244,7 +244,7 @@ func (t *Tokenizer) tryTokenizeKeyword() Token {
 func (t *Tokenizer) TokenizeSingle() (Token, error) {
 	var keywordToken Token
 	var symToken Token
-	var num *NumberToken
+	var intLiteral *IntLiteralToken
 	var floatNum *FloatNumberToken
 	var varToken *VariableToken
 	var strToken *QuoteStringToken
@@ -252,8 +252,8 @@ func (t *Tokenizer) TokenizeSingle() (Token, error) {
 
 	if t.inputPos >= len(t.input) {
 		return nil, nil
-	} else if num = t.tryTokenizeNumber(); num != nil {
-		return num, nil
+	} else if intLiteral = t.tryTokenizeInt(); intLiteral != nil {
+		return intLiteral, nil
 	} else if floatNum = t.tryTokenizeFloat(); floatNum != nil {
 		return floatNum, nil
 	} else if varToken = t.tryTokenizeVariable(); varToken != nil {

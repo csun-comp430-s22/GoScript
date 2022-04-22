@@ -15,9 +15,9 @@ func tokenize(input string) []token.Token {
 }
 
 func TestPlusOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &PlusOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &PlusOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &PlusOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -34,7 +34,7 @@ func TestPlusOpExp(t *testing.T) {
 
 func TestAdditiveOpPlus(t *testing.T) {
 
-	tokens := []token.Token{&token.PlusToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.PlusToken{}, &token.IntLiteralToken{Number: 1}}
 	parser := NewParser(tokens)
 	parseResult, err := parser.ParseAdditiveOp(0)
 	if err != nil {
@@ -48,9 +48,9 @@ func TestAdditiveOpPlus(t *testing.T) {
 
 }
 func TestMinusOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &MinusOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &MinusOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &MinusOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &MinusOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &MinusOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &MinusOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -81,9 +81,9 @@ func TestSubtractiveOpMinus(t *testing.T) {
 
 }
 func TestDivideOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &DivideOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &DivideOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &DivideOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &DivideOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &DivideOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &DivideOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -115,9 +115,9 @@ func TestDivisionOpDivide(t *testing.T) {
 }
 
 func TestMultiplyOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &MultiplyOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &MultiplyOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &MultiplyOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &MultiplyOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &MultiplyOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &MultiplyOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -149,9 +149,9 @@ func TestMultiplicationOpMultiply(t *testing.T) {
 }
 
 func TestPowOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &PowOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &PowOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &PowOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &PowOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &PowOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &PowOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -183,9 +183,9 @@ func TestExponentOpPower(t *testing.T) {
 }
 
 func TestModOpTestExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &ModOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &ModOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &ModOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &ModOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &ModOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &ModOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -217,9 +217,9 @@ func TestModuloOpMod(t *testing.T) {
 }
 
 func TestAndOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &AndOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &AndOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &AndOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -234,7 +234,7 @@ func TestAndOpExp(t *testing.T) {
 }
 
 /* func TestLessThanExp(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{1}, &token.LesserToken{}, &token.NumberToken{2}}
+	tokens := []token.Token{&token.IntLiteralToken{1}, &token.LesserToken{}, &token.IntLiteralToken{2}}
 	parser := NewParser(tokens)
 
 	parseResult, err := parser.ParseComparisonExp(0)
@@ -242,7 +242,7 @@ func TestAndOpExp(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	expected := NewParseResult(NewOpExp(&NumberExp{1}, &LessOp{}, &NumberExp{2}), 3)
+	expected := NewParseResult(NewOpExp(&IntLiteralExp{1}, &LessOp{}, &IntLiteralExp{2}), 3)
 
 	fmt.Printf("parseResult: %v\n", parseResult)
 	fmt.Printf("expected: %v\n", expected)
@@ -254,9 +254,9 @@ func TestAndOpExp(t *testing.T) {
 } */
 
 func TestPipeOperatorOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &PipeOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &PipeOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &PipeOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -287,9 +287,9 @@ func TestPipeOperatorOpPipeOp(t *testing.T) {
 
 }
 func TestEqualsOp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &EqualsOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &EqualsOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &EqualsOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -304,9 +304,9 @@ func TestEqualsOp(t *testing.T) {
 
 }
 func TestNotEquals(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &NotEqualsOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &NotEqualsOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &NotEqualsOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &NotEqualsOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &NotEqualsOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &NotEqualsOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -322,9 +322,9 @@ func TestNotEquals(t *testing.T) {
 }
 
 func TestOrOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &OrOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &OrOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &OrOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &OrOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &OrOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &OrOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -355,9 +355,9 @@ func TestOrOpMod(t *testing.T) {
 }
 
 func TestLessThanOp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &LessOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &LessOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &LessOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &LessOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &LessOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &LessOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -372,9 +372,9 @@ func TestLessThanOp(t *testing.T) {
 }
 
 func TestAndOp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &AndOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &AndOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &AndOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -432,9 +432,9 @@ func TestAssignmentOp(t *testing.T) {
 	}
 }*/
 func TestGreaterThanOp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &GreaterOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &GreaterOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &GreaterOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &GreaterOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &GreaterOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &GreaterOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -448,9 +448,9 @@ func TestGreaterThanOp(t *testing.T) {
 	}
 }
 func TestLessEqualExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &LessEqualOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &LessEqualOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &LessEqualOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &LessEqualOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &LessEqualOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &LessEqualOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -466,9 +466,9 @@ func TestLessEqualExp(t *testing.T) {
 
 //TODO: Merged Tokens needed for this parser
 /* func TestGreaterEqualOpExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &GreaterEqualOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &GreaterEqualOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &GreaterEqualOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &GreaterEqualOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &GreaterEqualOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &GreaterEqualOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -494,9 +494,9 @@ func TestGreaterEqualModTest(t *testing.T) {
 } */
 
 func TestNegateOpTestExp(t *testing.T) {
-	first := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{1})
-	second := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{1})
-	third := NewOpExp(&NumberExp{1}, &NegateOp{}, &NumberExp{2})
+	first := NewOpExp(&IntLiteralExp{1}, &NegateOp{}, &IntLiteralExp{1})
+	second := NewOpExp(&IntLiteralExp{1}, &NegateOp{}, &IntLiteralExp{1})
+	third := NewOpExp(&IntLiteralExp{1}, &NegateOp{}, &IntLiteralExp{2})
 
 	fmt.Printf("%#v, %#v", first, second)
 	if !first.Equals(second) {
@@ -531,73 +531,73 @@ func TestIncorrectPosition(t *testing.T) {
 }
 
 func TestAdditivePlusExp(t *testing.T) {
-	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseAdditiveExp(0)
 
-	if parseResult.Equals(NewParseResult[Exp](NewOpExp(&VariableExp{}, &EqualsOp{}, &NumberExp{1}), 3)) {
+	if parseResult.Equals(NewParseResult[Exp](NewOpExp(&VariableExp{}, &EqualsOp{}, &IntLiteralExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
 
 func TestAdditiveExp(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.PlusToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IntLiteralToken{Number: 1}, &token.PlusToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseAdditiveExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &PlusOp{}, &NumberExp{1}), 3)) {
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&IntLiteralExp{1}, &PlusOp{}, &IntLiteralExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
 
 func TestComparisonExpLess(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.LesserToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IntLiteralToken{Number: 1}, &token.LesserToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &LessOp{}, &NumberExp{1}), 3)) {
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&IntLiteralExp{1}, &LessOp{}, &IntLiteralExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
 
 func TestComparisonExpGreater(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.GreaterToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IntLiteralToken{Number: 1}, &token.GreaterToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &GreaterOp{}, &NumberExp{1}), 3)) {
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&IntLiteralExp{1}, &GreaterOp{}, &IntLiteralExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
 
 func TestComparisonExpEquals(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IntLiteralToken{Number: 1}, &token.EqualsToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1}), 3)) {
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&IntLiteralExp{1}, &EqualsOp{}, &IntLiteralExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
 
 func TestComparisonExpNotEquals(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.NotEqualsToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IntLiteralToken{Number: 1}, &token.NotEqualsToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseComparisonExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &NotEqualsOp{}, &NumberExp{1}), 3)) {
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&IntLiteralExp{1}, &NotEqualsOp{}, &IntLiteralExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
 
 func TestComparisonOpInvalid(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.NegateToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IntLiteralToken{Number: 1}, &token.NegateToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	_, err := parser.ParseComparisonExp(0)
@@ -615,12 +615,12 @@ func TestComparisonOpInvalid(t *testing.T) {
 // 	return NewParseResult[Operator](&NegateOp{}, position+1), nil
 
 func TestLogicalExpAnd(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.AndToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IntLiteralToken{Number: 1}, &token.AndToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseLogicalExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &AndOp{}, &NumberExp{1}), 3)) {
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&IntLiteralExp{1}, &AndOp{}, &IntLiteralExp{1}), 3)) {
 
 		t.Error("Parse result did not equal the expected result")
 	}
@@ -641,18 +641,18 @@ func TestLogicalOpOr(t *testing.T) {
 }
 
 func TestLogicalExpOr(t *testing.T) {
-	tokens := []token.Token{&token.NumberToken{Number: 1}, &token.OrToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.IntLiteralToken{Number: 1}, &token.OrToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseLogicalExp(0)
 
-	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&NumberExp{1}, &OrOp{}, &NumberExp{1}), 3)) {
+	if !parseResult.Equals(NewParseResult[Exp](NewOpExp(&IntLiteralExp{1}, &OrOp{}, &IntLiteralExp{1}), 3)) {
 		t.Error("Parse result did not equal the expected result")
 	}
 }
 
 func TestParseStmtTestExp(t *testing.T) {
-	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.NumberToken{Number: 1}}
+	tokens := []token.Token{&token.VariableToken{Name: "x"}, &token.EqualsToken{}, &token.IntLiteralToken{Number: 1}}
 
 	parser := NewParser(tokens)
 	parseResult, _ := parser.ParseStmt(0)
@@ -666,9 +666,9 @@ func TestIfStmt(t *testing.T) {
 	tokens := []token.Token{
 		&token.IfToken{},
 		&token.LeftParenToken{},
-		&token.NumberToken{1},
+		&token.IntLiteralToken{1},
 		&token.EqualsToken{},
-		&token.NumberToken{1},
+		&token.IntLiteralToken{1},
 		&token.RightParenToken{},
 		&token.LeftCurlyToken{},
 		&token.RightCurlyToken{},
@@ -678,7 +678,7 @@ func TestIfStmt(t *testing.T) {
 	parseResult, _ := parser.ParseStmt(0)
 
 	expected := NewParseResult[Stmt](NewIfStmt(
-		NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1}),
+		NewOpExp(&IntLiteralExp{1}, &EqualsOp{}, &IntLiteralExp{1}),
 		NewBlockStmt([]Stmt{})), 7)
 
 	if !parseResult.Equals(expected) {
@@ -693,7 +693,7 @@ func TestIfElseStmt(t *testing.T) {
 	parseResult, _ := parser.ParseStmt(0)
 
 	expected := NewParseResult[Stmt](NewIfElseStmt(
-		NewOpExp(&NumberExp{1}, &EqualsOp{}, &NumberExp{1}),
+		NewOpExp(&IntLiteralExp{1}, &EqualsOp{}, &IntLiteralExp{1}),
 		NewBlockStmt([]Stmt{}),
 		NewBlockStmt([]Stmt{}),
 	), 10)

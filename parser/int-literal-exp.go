@@ -4,19 +4,19 @@ import (
 	"reflect"
 )
 
-type NumberExp struct {
+type IntLiteralExp struct {
 	Number int
 }
 
-func (ne *NumberExp) Equals(other interface{}) bool {
-	if reflect.TypeOf(ne) == reflect.TypeOf(other) {
+func (ile *IntLiteralExp) Equals(other interface{}) bool {
+	if reflect.TypeOf(ile) == reflect.TypeOf(other) {
 		castNumExp := reflect.ValueOf(other)
 		castNumExp = reflect.Indirect(castNumExp)
 		otherNumber := int(castNumExp.FieldByName("Number").Int())
-		return otherNumber == ne.Number
+		return otherNumber == ile.Number
 	}
 	return false
 
 }
 
-func (ne *NumberExp) exp() {}
+func (ile *IntLiteralExp) exp() {}

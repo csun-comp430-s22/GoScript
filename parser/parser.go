@@ -46,9 +46,9 @@ func (p *Parser) ParsePrimaryExp(position int) (*ParseResult[Exp], error) {
 	if varToken, ok := tkn.(*token.VariableToken); ok {
 		name := varToken.Name
 		return NewParseResult[Exp](&VariableExp{Variable: Variable{Name: name}}, position+1), nil
-	} else if numToken, ok := tkn.(*token.NumberToken); ok {
-		val := numToken.Number
-		return NewParseResult[Exp](&NumberExp{Number: val}, position+1), nil
+	} else if intToken, ok := tkn.(*token.IntLiteralToken); ok {
+		val := intToken.Number
+		return NewParseResult[Exp](&IntLiteralExp{Number: val}, position+1), nil
 	} else { // TODO missing some else ifs abovs
 		return nil, NewParserError("Expected primary expression, received: " + tkn.String())
 	}

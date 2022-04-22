@@ -5,11 +5,11 @@ import (
 	"strconv"
 )
 
-type NumberToken struct {
+type IntLiteralToken struct {
 	Number int
 }
 
-func (nt *NumberToken) Equals(other interface{}) bool {
+func (nt *IntLiteralToken) Equals(other interface{}) bool {
 
 	if reflect.TypeOf(nt) == reflect.TypeOf(other) {
 		castNumToken := reflect.ValueOf(other)
@@ -20,6 +20,6 @@ func (nt *NumberToken) Equals(other interface{}) bool {
 	return false
 }
 
-func (nt *NumberToken) String() string {
+func (nt *IntLiteralToken) String() string {
 	return strconv.Itoa(nt.Number)
 }

@@ -26,13 +26,13 @@ func TestTokenizerError(t *testing.T) {
 
 }
 
-func TestTokenizeNumber(t *testing.T) {
+func TestTokenizeInteger(t *testing.T) {
 	input := "100"
 	expected, _ := strconv.Atoi(input)
 
 	tokenizer := NewTokenizer(input)
 	tokens := tokenizer.Tokenize()
-	if !tokens[0].Equals(&NumberToken{expected}) {
+	if !tokens[0].Equals(&IntLiteralToken{expected}) {
 		t.Error()
 	}
 
