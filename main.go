@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/vSterlin/goscript/parser"
 	"github.com/vSterlin/goscript/token"
 )
 
@@ -36,14 +37,19 @@ func main() {
 
 	// tokens := []token.Token{&token.NumberToken{1}, &token.EqualsToken{}, &token.NumberToken{1}}
 
-	// tokenizer := token.NewTokenizer("fn int abcefg(lol int){}")
-	tokenizer := token.NewTokenizer("{1}")
+	tokenizer := token.NewTokenizer("fn int funcName(x int, y int){}")
+	// tokenizer := token.NewTokenizer("{1}")
 
 	tokens := tokenizer.Tokenize()
 
 	for _, t := range tokens {
 		fmt.Printf("%#v\n", t)
 	}
+
+	p := parser.NewParser(tokens)
+	parseRes, _ := p.ParseStmt(0)
+
+	fmt.Printf("parseRes: %#v\n", parseRes)
 
 	// fmt.Printf("tokens: %v\n", tokens)
 

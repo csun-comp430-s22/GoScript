@@ -6,12 +6,12 @@ import (
 
 type FunctionDef struct {
 	Name       FunctionName
-	Args       []Vardec
+	Args       []*Vardec
 	Body       Stmt
 	ReturnType Type
 }
 
-func NewFunctionDef(name FunctionName, args []Vardec, body Stmt, returnType Type) *FunctionDef {
+func NewFunctionDef(name FunctionName, args []*Vardec, body Stmt, returnType Type) *FunctionDef {
 	return &FunctionDef{Name: name, Args: args, Body: body, ReturnType: returnType}
 }
 
@@ -24,7 +24,7 @@ func (FD *FunctionDef) Equals(other interface{}) bool {
 	return false
 }
 
-func equalVardecs(a []Vardec, b []Vardec) bool {
+func equalVardecs(a []*Vardec, b []*Vardec) bool {
 	if len(a) != len(b) {
 		return false
 	}

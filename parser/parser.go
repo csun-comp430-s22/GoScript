@@ -238,7 +238,9 @@ func (p *Parser) parseBlockStmt(position int) (*ParseResult[Stmt], error) {
 func (p *Parser) parseType(position int) (*ParseResult[Type], error) {
 	tkn, err := p.GetToken(position)
 
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	if _, ok := tkn.(*token.IntToken); ok {
 		return NewParseResult[Type](&IntType{}, position+1), nil
@@ -248,18 +250,77 @@ func (p *Parser) parseType(position int) (*ParseResult[Type], error) {
 
 }
 
+func (p *Parser) parseFuncArgs(position int) ([]*Vardec, int, error) {
+	shouldRun := true
+	varDecs := []*Vardec{}
+	currentPos := position
+	for shouldRun {
+		tkn, err := p.GetToken(currentPos)
+		if err != nil {
+			shouldRun = false
+			break
+		}
+
+		if varTkn, ok := tkn.(*token.VariableToken); ok {
+
+			varType, err := p.parseType(currentPos + 1)
+			if err != nil {
+				return nil, currentPos, NewParserError(err.Error())
+			}
+			varDec := NewVardec(&Variable{Name: varTkn.Name}, varType.Result)
+			varDecs = append(varDecs, varDec)
+			currentPos += 2
+
+			tkn, err := p.GetToken(currentPos)
+			fmt.Printf("tkn: %#v\n", tkn)
+
+			if _, ok := tkn.(*token.CommaToken); err != nil || !ok {
+				shouldRun = false
+				break
+			}
+			currentPos += 1
+
+		} else {
+			shouldRun = false
+			break
+		}
+
+	}
+	return varDecs, currentPos, nil
+}
+
 func (p *Parser) parseFunctionDefinition(position int) (*ParseResult[Stmt], error) {
-	fmt.Println("FUNCTION")
+	// fmt.Println("FUNCTION")
 
-	// returnTypeTkn, err := p.parseType(position + 1)
-	// if err != nil {
-	// 	return nil, NewParserError("expected type here")
-	// }
+	returnTypeRes, err := p.parseType(position + 1)
+	if err != nil {
+		return nil, NewParserError("expected type here")
+	}
 
-	// need to define some parseFuncname function
-	// funcNameTkn, err := p.parse
+	funcNameTkn, _ := p.GetToken(returnTypeRes.Position)
 
-	return nil, nil
+	funcName := ""
+	if castFuncNameTkn, ok := funcNameTkn.(*token.VariableToken); ok {
+		funcName = castFuncNameTkn.Name
+	}
+
+	p.AssertTokenIsHere(returnTypeRes.Position+1, &token.LeftParenToken{})
+
+	args, position, _ := p.parseFuncArgs(returnTypeRes.Position + 2)
+
+	if err != nil {
+		return nil, NewParserError("oof")
+	}
+
+	p.AssertTokenIsHere(position, &token.RightParenToken{})
+
+	stmtRes, err := p.ParseStmt(position + 1)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return NewParseResult[Stmt](NewFunctionDef(*NewFunctionName(funcName), args, stmtRes.Result, returnTypeRes.Result), stmtRes.Position), nil
 }
 
 func (p *Parser) parseProgram(position int) (*ParseResult[*Program], error) {

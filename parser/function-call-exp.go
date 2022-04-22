@@ -26,3 +26,5 @@ func (FCE *FunctionCallExp) Equals(other interface{}) bool {
 	}
 	return false
 }
+
+func (fce *FunctionCallExp) exp() {}
