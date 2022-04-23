@@ -13,8 +13,8 @@ func NewVardec(v *Variable, t Type) *Vardec {
 	return &Vardec{Variable: v, Type: t}
 }
 
-func (VD *Vardec) Equals(other interface{}) bool {
+func (vd *Vardec) Equals(other interface{}) bool {
 	castOther := reflect.ValueOf(other)
 	otherVardec, ok := reflect.Indirect(castOther).Interface().(Vardec)
-	return ok && reflect.TypeOf(other) == reflect.TypeOf(VD) && VD.Variable.Equals(otherVardec.Variable) && VD.Type.Equals(otherVardec.Type)
+	return ok && reflect.TypeOf(other) == reflect.TypeOf(vd) && vd.Variable.Equals(otherVardec.Variable) && vd.Type.Equals(otherVardec.Type)
 }

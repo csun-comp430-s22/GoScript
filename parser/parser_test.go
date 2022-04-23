@@ -703,8 +703,30 @@ func TestIfElseStmt(t *testing.T) {
 	}
 }
 
+func TestFuncDef(t *testing.T) {
+	tokens := tokenize("fn int test(x int){}")
+	parser := NewParser(tokens)
+	expected := NewParseResult(NewFunctionDef(
+		NewFunctionName("test"),
+		[]*Vardec{NewVardec(NewVariable("x"), &IntType{})},
+		NewBlockStmt([]Stmt{}),
+		&IntType{},
+	), len(tokens)-1)
+
+	parseResult, err := parser.ParseFunctionDefinition(0)
+	if parseResult == nil || err != nil {
+		t.Fatalf("program did not parse")
+	}
+	if !parseResult.Equals(expected) {
+		t.Fatalf("incorrect AST for ParseFunctionDefinition function")
+	}
+
+}
 func TestProgram(t *testing.T) {
-	tokens := tokenize("{}")
+	tokens := tokenize(`
+		fn int funcName(x int){}
+		fn int anotherFunc(a int){}
+		fn int thirdFunc(a int, b int){}`)
 
 	parser := NewParser(tokens)
 	if parseResult, err := parser.ParseProgram(); parseResult == nil || err != nil {

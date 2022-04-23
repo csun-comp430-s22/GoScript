@@ -37,20 +37,28 @@ func main() {
 
 	// tokens := []token.Token{&token.NumberToken{1}, &token.EqualsToken{}, &token.NumberToken{1}}
 
-	tokenizer := token.NewTokenizer("fn int funcName(x int, y int){}")
-	// tokenizer := token.NewTokenizer("{1}")
+	// tokenizer := token.NewTokenizer(`
+	// 	fn int funcName(x int){}
+	// 	fn int anotherFunc(a int){}
+	// 	fn int thirdFunc(a int, b int){}`)
+
+	tokenizer := token.NewTokenizer("fn int test(x int){}")
 
 	tokens := tokenizer.Tokenize()
 
-	for _, t := range tokens {
-		fmt.Printf("%#v\n", t)
+	for i, t := range tokens {
+		fmt.Printf("%d: %#v\n", i, t)
 	}
 
 	p := parser.NewParser(tokens)
-	parseRes, _ := p.ParseStmt(0)
+	parseRes, _ := p.ParseFunctionDefinition(0)
 
-	fmt.Printf("parseRes: %#v\n", parseRes)
+	expected := parser.NewParseResult(parser.NewFunctionDef(
+		parser.NewFunctionName("test"),
+		[]*parser.Vardec{parser.NewVardec(parser.NewVariable("x"), &parser.IntType{})},
+		parser.NewBlockStmt([]parser.Stmt{}),
+		&parser.IntType{},
+	), len(tokens)-1)
 
-	// fmt.Printf("tokens: %v\n", tokens)
-
+	fmt.Printf("parseRes.Equals(expected): %v\n", parseRes.Equals(expected))
 }

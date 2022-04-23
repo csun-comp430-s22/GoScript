@@ -21,6 +21,7 @@ func (pr *ParseResult[T]) Equals(other any) bool {
 		// if reflect.TypeOf(other) == reflect.TypeOf(pr) {
 		castOther := reflect.ValueOf(other)
 		otherParseResult, ok := reflect.Indirect(castOther).Interface().(ParseResult[T])
+
 		return ok && pr.Result.Equals(otherParseResult.Result) && pr.Position == otherParseResult.Position
 	}
 	return false

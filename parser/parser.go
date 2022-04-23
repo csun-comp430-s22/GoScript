@@ -193,7 +193,10 @@ func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
 	} else if _, ok := tkn.(*token.LeftCurlyToken); ok {
 		return p.parseBlockStmt(position)
 	} else if _, ok := tkn.(*token.FnToken); ok {
-		return p.parseFunctionDefinition(position)
+		res, err := p.ParseFunctionDefinition(position)
+		// this was done cause p.ParseFunctionDefinition(position) returns *ParseResult[*FunctionDef]
+		// instead of *ParseResult[Stmt]
+		return NewParseResult[Stmt](res.Result, res.Position), err
 	} else {
 		return nil, NewParserError("expected statement, received: " + tkn.String())
 	}
@@ -231,7 +234,6 @@ func (p *Parser) parseBlockStmt(position int) (*ParseResult[Stmt], error) {
 		smts = append(smts, stmt.Result)
 		currentPosition = stmt.Position
 	}
-	fmt.Printf("currentPosition: %v\n", currentPosition)
 	return NewParseResult[Stmt](NewBlockStmt(smts), currentPosition), nil
 }
 
@@ -272,7 +274,7 @@ func (p *Parser) parseFuncArgs(position int) ([]*Vardec, int, error) {
 			currentPos += 2
 
 			tkn, err := p.GetToken(currentPos)
-			fmt.Printf("tkn: %#v\n", tkn)
+			// fmt.Printf("tkn: %#v\n", tkn)
 
 			if _, ok := tkn.(*token.CommaToken); err != nil || !ok {
 				shouldRun = false
@@ -289,7 +291,7 @@ func (p *Parser) parseFuncArgs(position int) ([]*Vardec, int, error) {
 	return varDecs, currentPos, nil
 }
 
-func (p *Parser) parseFunctionDefinition(position int) (*ParseResult[Stmt], error) {
+func (p *Parser) ParseFunctionDefinition(position int) (*ParseResult[*FunctionDef], error) {
 	// fmt.Println("FUNCTION")
 
 	returnTypeRes, err := p.parseType(position + 1)
@@ -320,13 +322,44 @@ func (p *Parser) parseFunctionDefinition(position int) (*ParseResult[Stmt], erro
 		return nil, err
 	}
 
-	return NewParseResult[Stmt](NewFunctionDef(*NewFunctionName(funcName), args, stmtRes.Result, returnTypeRes.Result), stmtRes.Position), nil
+	return NewParseResult(NewFunctionDef(NewFunctionName(funcName), args, stmtRes.Result, returnTypeRes.Result), stmtRes.Position), nil
 }
 
-func (p *Parser) parseProgram(position int) (*ParseResult[*Program], error) {
-	stmt, _ := p.ParseStmt(position)
+// // Old
+// func (p *Parser) parseProgram(position int) (*ParseResult[*Program], error) {
+// 	stmt, _ := p.ParseStmt(position)
 
-	return NewParseResult(NewProgram(stmt.Result), stmt.Position), nil
+// 	return NewParseResult(NewProgram(stmt.Result), stmt.Position), nil
+// }
+
+func (p *Parser) parseProgram(position int) (*ParseResult[*Program], error) {
+
+	shouldRun := true
+
+	funcDefs := []*FunctionDef{}
+	currentPos := position
+	for shouldRun {
+		funcDef, err := p.ParseFunctionDefinition(currentPos)
+		if err != nil {
+			shouldRun = false
+			break
+		}
+		funcDefs = append(funcDefs, funcDef.Result)
+		currentPos = funcDef.Position
+
+		if currentPos == len(p.Tokens)-1 {
+			// if reached the end leave currentPos as is
+			shouldRun = false
+			break
+
+		} else {
+			// no errors and next token is fn token
+			p.AssertTokenIsHere(currentPos+1, &token.FnToken{})
+			currentPos += 1
+		}
+	}
+
+	return NewParseResult(NewProgram(funcDefs), currentPos), nil
 }
 
 func (p *Parser) ParseProgram() (*Program, error) {
@@ -335,6 +368,7 @@ func (p *Parser) ParseProgram() (*Program, error) {
 	if program.Position == len(p.Tokens)-1 {
 		return program.Result, nil
 	} else {
+		fmt.Printf("program.Position: %v\n", program.Position)
 		panic("Remaining tokens at end")
 	}
 }

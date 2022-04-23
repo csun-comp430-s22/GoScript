@@ -75,6 +75,12 @@ func (t *Typechecker) TypeOfOpExp(exp parser.OperatorExp, typeEnv TypeEnvironmen
 
 }
 
+// // idk how to implement this yet cause we dont have a function list in our program
+// func (t *Typechecker) GetFunctionByName(funcName parser.FunctionName) (parser.FunctionDef,error) {
+
+// }
+
 // func (t *Typechecker) TypeOfFuncCallExp(exp parser.FunctionCallExp, typEnv TypeEnvironment) (parser.Type, error) {
 
+// 	fDef := par
 // }
