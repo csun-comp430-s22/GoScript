@@ -372,3 +372,24 @@ func (p *Parser) ParseProgram() (*Program, error) {
 		panic("Remaining tokens at end")
 	}
 }
+
+//few problems here
+/* func (p *Parser) parseFunctionCall(position int) (*ParseResult[*FunctionCall], error) {
+    funcNameTkn, _ := p.GetToken(position)
+    funcName := ""
+    if castFuncNameTkn, ok := funcNameTkn.(*token.VariableToken); ok {
+        funcName = castFuncNameTkn.Name
+    }
+
+    p.AssertTokenIsHere(position+1, &token.LeftParenToken{})
+
+    args, position, _ := p.parseFuncArgs(position + 2)
+
+    if err != nil {
+        return nil, NewParserError("oof")
+    }
+
+    p.AssertTokenIsHere(position, &token.RightParenToken{})
+
+    return NewParseResult(NewFunctionCall(funcName, args), position), nil
+} */
