@@ -78,7 +78,9 @@ func TestAllKeywords(t *testing.T) {
 		{"print", &PrintToken{}},
 		{"return", &ReturnToken{}},
 		{"str", &StringToken{}},
-		{"var", &VarToken{}}}
+		{"var", &VarToken{}},
+		{"higherorder", &HigherOrderToken{}},
+	}
 
 	for _, test := range keywordTests {
 		t.Run(test.Input, func(t *testing.T) {
@@ -386,6 +388,13 @@ func TestTokenizePipe(t *testing.T) {
 
 func TestTokenizeNotEquals(t *testing.T) {
 	isValid := testTokens("!=", &NotEqualsToken{})
+	if !isValid {
+		t.Error()
+	}
+}
+
+func TestTokenizeHigherOrder(t *testing.T) {
+	isValid := testTokens("higherorder", &HigherOrderToken{})
 	if !isValid {
 		t.Error()
 	}

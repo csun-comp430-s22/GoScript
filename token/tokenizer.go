@@ -19,21 +19,22 @@ type Tokenizer struct {
 func NewTokenizer(input string) *Tokenizer {
 
 	keywordMap := map[string]Token{
-		"true":   &TrueToken{},
-		"false":  &FalseToken{},
-		"if":     &IfToken{},
-		"else":   &ElseToken{},
-		"float":  &FloatToken{},
-		"for":    &ForToken{},
-		"fn":     &FnToken{},
-		"int":    &IntToken{},
-		"str":    &StringToken{},
-		"bool":   &BoolToken{},
-		"const":  &ConstToken{},
-		"print":  &PrintToken{},
-		"return": &ReturnToken{},
-		"string": &StringToken{},
-		"var":    &VarToken{},
+		"true":        &TrueToken{},
+		"false":       &FalseToken{},
+		"if":          &IfToken{},
+		"else":        &ElseToken{},
+		"float":       &FloatToken{},
+		"for":         &ForToken{},
+		"fn":          &FnToken{},
+		"int":         &IntToken{},
+		"str":         &StringToken{},
+		"bool":        &BoolToken{},
+		"const":       &ConstToken{},
+		"print":       &PrintToken{},
+		"return":      &ReturnToken{},
+		"string":      &StringToken{},
+		"var":         &VarToken{},
+		"higherorder": &HigherOrderToken{},
 	}
 
 	oneSymbolMap := map[string]Token{

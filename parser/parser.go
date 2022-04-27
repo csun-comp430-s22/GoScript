@@ -414,3 +414,53 @@ func (p *Parser) ParseFunctionCall(position int) (*ParseResult[*FunctionCallExp]
 
 	return NewParseResult(NewFunctionCallExp(NewFunctionName(funcName), params), position), nil
 }
+
+/* func (p *Parser) ParseHigherOrderFunctionDef (position int) (*ParseResult[*HigherOrderFunctionDef], error) {
+	returnTypeRes, err := p.parseType(position + 1)
+	if err != nil {
+		return nil, NewParserError("expected type here")
+	}
+
+	funcNameTkn, _ := p.GetToken(returnTypeRes.Position)
+
+	funcName := ""
+	if castFuncNameTkn, ok := funcNameTkn.(*token.VariableToken); ok {
+		funcName = castFuncNameTkn.Name
+	}
+
+	p.AssertTokenIsHere(returnTypeRes.Position+1, &token.LeftParenToken{})
+
+	params, position, _ := p.parseFuncParams(returnTypeRes.Position + 2)
+
+	if err != nil {
+		return nil, NewParserError("oof")
+	}
+
+	p.AssertTokenIsHere(position, &token.RightParenToken{})
+
+	stmtRes, err := p.ParseStmt(position + 1)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return NewParseResult(NewHigherOrderFunctionDef(NewFunctionName(funcName), params, stmtRes.Result, returnTypeRes.Result), stmtRes.Position), nil
+}
+*/
+
+/* func (p *Parser) ParseHigherOrderFunctionCall (position int) (*ParseResult[*HigherOrderFunctionCallExp], error) {
+	funcNameTkn, _ := p.GetToken(position)
+	funcName := ""
+	if castFuncNameTkn, ok := funcNameTkn.(*token.VariableToken); ok {
+		funcName = castFuncNameTkn.Name
+	}
+
+	p.AssertTokenIsHere(position+1, &token.LeftParenToken{})
+
+	params, position, _ := p.parseFuncParams(position + 2)
+
+	p.AssertTokenIsHere(position, &token.RightParenToken{})
+
+	return NewParseResult(NewHigherOrderFunctionCallExp(NewFunctionName(funcName), params), position), nil
+}
+*/

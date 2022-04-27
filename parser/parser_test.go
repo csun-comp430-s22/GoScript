@@ -666,9 +666,9 @@ func TestIfStmt(t *testing.T) {
 	tokens := []token.Token{
 		&token.IfToken{},
 		&token.LeftParenToken{},
-		&token.IntLiteralToken{1},
+		&token.IntLiteralToken{Number: 1},
 		&token.EqualsToken{},
-		&token.IntLiteralToken{1},
+		&token.IntLiteralToken{Number: 1},
 		&token.RightParenToken{},
 		&token.LeftCurlyToken{},
 		&token.RightCurlyToken{},
