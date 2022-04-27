@@ -373,23 +373,44 @@ func (p *Parser) ParseProgram() (*Program, error) {
 	}
 }
 
-//few problems here
-/* func (p *Parser) parseFunctionCall(position int) (*ParseResult[*FunctionCall], error) {
-    funcNameTkn, _ := p.GetToken(position)
-    funcName := ""
-    if castFuncNameTkn, ok := funcNameTkn.(*token.VariableToken); ok {
-        funcName = castFuncNameTkn.Name
-    }
+func (p *Parser) parseFuncParams(position int) ([]Exp, int, error) {
+	shouldRun := true
+	params := []Exp{}
+	currentPos := position
+	for shouldRun {
+		exp, err := p.ParsePrimaryExp(currentPos)
+		if err != nil {
+			shouldRun = false
+			break
+		}
 
-    p.AssertTokenIsHere(position+1, &token.LeftParenToken{})
+		params = append(params, exp.Result)
+		currentPos = exp.Position
 
-    args, position, _ := p.parseFuncArgs(position + 2)
+		tkn, err := p.GetToken(currentPos)
 
-    if err != nil {
-        return nil, NewParserError("oof")
-    }
+		if _, ok := tkn.(*token.CommaToken); err != nil || !ok {
+			shouldRun = false
+			break
+		}
+		currentPos += 1
 
-    p.AssertTokenIsHere(position, &token.RightParenToken{})
+	}
+	return params, currentPos, nil
+}
 
-    return NewParseResult(NewFunctionCall(funcName, args), position), nil
-} */
+func (p *Parser) ParseFunctionCall(position int) (*ParseResult[*FunctionCallExp], error) {
+	funcNameTkn, _ := p.GetToken(position)
+	funcName := ""
+	if castFuncNameTkn, ok := funcNameTkn.(*token.VariableToken); ok {
+		funcName = castFuncNameTkn.Name
+	}
+
+	p.AssertTokenIsHere(position+1, &token.LeftParenToken{})
+
+	params, position, _ := p.parseFuncParams(position + 2)
+
+	p.AssertTokenIsHere(position, &token.RightParenToken{})
+
+	return NewParseResult(NewFunctionCallExp(NewFunctionName(funcName), params), position), nil
+}

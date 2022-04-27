@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/vSterlin/goscript/parser"
 	"github.com/vSterlin/goscript/token"
 )
 
@@ -42,7 +41,27 @@ func main() {
 	// 	fn int anotherFunc(a int){}
 	// 	fn int thirdFunc(a int, b int){}`)
 
-	tokenizer := token.NewTokenizer("fn int test(x int){}")
+	// tokenizer := token.NewTokenizer("fn int test(x int){}")
+
+	// tokens := tokenizer.Tokenize()
+
+	// for i, t := range tokens {
+	// 	fmt.Printf("%d: %#v\n", i, t)
+	// }
+
+	// p := parser.NewParser(tokens)
+	// parseRes, _ := p.ParseFunctionDefinition(0)
+
+	// expected := parser.NewParseResult(parser.NewFunctionDef(
+	// 	parser.NewFunctionName("test"),
+	// 	[]*parser.Vardec{parser.NewVardec(parser.NewVariable("x"), &parser.IntType{})},
+	// 	parser.NewBlockStmt([]parser.Stmt{}),
+	// 	&parser.IntType{},
+	// ), len(tokens)-1)
+
+	// fmt.Printf("parseRes.Equals(expected): %v\n", parseRes.Equals(expected))
+
+	tokenizer := token.NewTokenizer("test(1,2)")
 
 	tokens := tokenizer.Tokenize()
 
@@ -50,15 +69,16 @@ func main() {
 		fmt.Printf("%d: %#v\n", i, t)
 	}
 
-	p := parser.NewParser(tokens)
-	parseRes, _ := p.ParseFunctionDefinition(0)
+	// p := parser.NewParser(tokens)
 
-	expected := parser.NewParseResult(parser.NewFunctionDef(
-		parser.NewFunctionName("test"),
-		[]*parser.Vardec{parser.NewVardec(parser.NewVariable("x"), &parser.IntType{})},
-		parser.NewBlockStmt([]parser.Stmt{}),
-		&parser.IntType{},
-	), len(tokens)-1)
+	// parseResult, _ := p.ParseFunctionCall(0)
 
-	fmt.Printf("parseRes.Equals(expected): %v\n", parseRes.Equals(expected))
+	// expected := parser.NewParseResult(parser.NewFunctionCallExp(parser.NewFunctionName("test"), []parser.Exp{&parser.IntLiteralExp{1}, &parser.IntLiteralExp{2}}), 5)
+
+	// if !parseResult.Equals(expected) {
+	// 	fmt.Printf("expected: %#v\n", expected.Result)
+	// 	fmt.Printf("got: %#v\n", parseResult.Result)
+	// 	fmt.Printf("result: %#v\n", parseResult.Result.FunctionName.Equals(expected.Result.FunctionName))
+
+	// }
 }

@@ -722,6 +722,41 @@ func TestFuncDef(t *testing.T) {
 	}
 
 }
+
+func TestFuncCall(t *testing.T) {
+	tokens := tokenize("test(1)")
+
+	parser := NewParser(tokens)
+
+	if parseResult, err := parser.ParseFunctionCall(0); parseResult == nil || err != nil {
+		t.Fatalf("program did not parse")
+	}
+
+}
+
+func TestFuncCallWith2Params(t *testing.T) {
+	tokens := tokenize("test(1,2)")
+
+	parser := NewParser(tokens)
+
+	// if parseResult, err := parser.ParseFunctionCall(0); parseResult == nil || err != nil {
+	// 	t.Fatalf("program did not parse")
+	// }
+	parseResult, err := parser.ParseFunctionCall(0)
+	if parseResult == nil || err != nil {
+		t.Fatalf("program did not parse")
+	}
+
+	expected := NewParseResult(NewFunctionCallExp(NewFunctionName("test"), []Exp{&IntLiteralExp{1}, &IntLiteralExp{2}}), 5)
+
+	// the equality check does not work correctly. Likely error to do with pointer type comparisons :(
+	if !parseResult.Equals(expected) {
+
+		t.Fatalf("function call was parsed incorrectly")
+	}
+
+}
+
 func TestProgram(t *testing.T) {
 	tokens := tokenize(`
 		fn int funcName(x int){}

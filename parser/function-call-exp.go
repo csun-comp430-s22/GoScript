@@ -5,11 +5,11 @@ import (
 )
 
 type FunctionCallExp struct {
-	FunctionName FunctionName
+	FunctionName *FunctionName
 	Params       []Exp
 }
 
-func NewFunctionCallExp(functionName FunctionName, params []Exp) *FunctionCallExp {
+func NewFunctionCallExp(functionName *FunctionName, params []Exp) *FunctionCallExp {
 	return &FunctionCallExp{FunctionName: functionName, Params: params}
 }
 
