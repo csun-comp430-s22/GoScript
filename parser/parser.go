@@ -54,6 +54,17 @@ func (p *Parser) ParsePrimaryExp(position int) (*ParseResult[Exp], error) {
 	}
 }
 
+func (p *Parser) ParsePipeOp(position int) (*ParseResult[*PipeOp], error) {
+	tkn, _ := p.GetToken(position)
+
+	fmt.Printf("tkn: %#v\n", tkn)
+	if _, ok := tkn.(*token.PipeOperatorToken); ok {
+		return NewParseResult(&PipeOp{}, position), nil
+	} else {
+		return nil, NewParserError("err")
+	}
+}
+
 func (p *Parser) ParseAdditiveOp(position int) (*ParseResult[Operator], error) {
 	// TODO handle error
 	tkn, _ := p.GetToken(position)
@@ -71,8 +82,6 @@ func (p *Parser) ParseAdditiveOp(position int) (*ParseResult[Operator], error) {
 		return NewParseResult[Operator](&ModOp{}, position+1), nil
 	} else if _, ok := tkn.(*token.PowerToken); ok {
 		return NewParseResult[Operator](&PowOp{}, position+1), nil
-	} else if _, ok := tkn.(*token.PipeOperatorToken); ok {
-		return NewParseResult[Operator](&PipeOp{}, position+1), nil
 	} else if _, ok := tkn.(*token.OrToken); ok {
 		return NewParseResult[Operator](&OrOp{}, position+1), nil
 	} else if _, ok := tkn.(*token.AndToken); ok {
@@ -110,6 +119,7 @@ func (p *Parser) ParseAdditiveExp(position int) (*ParseResult[Exp], error) {
 func (p *Parser) ParseComparisonOp(position int) (*ParseResult[Operator], error) {
 	tkn, _ := p.GetToken(position)
 
+	// equals should probably go into a separate comparison function but maybe another time
 	if _, ok := tkn.(*token.EqualsToken); ok {
 		return NewParseResult[Operator](&EqualsOp{}, position+1), nil
 	} else if _, ok := tkn.(*token.NotEqualsToken); ok {
@@ -172,6 +182,31 @@ func (p *Parser) ParseLogicalExp(position int) (*ParseResult[Exp], error) {
 			break
 		}
 		current = NewParseResult[Exp](NewOpExp(current.Result, logicalOp.Result, anotherPrimary.Result), anotherPrimary.Position)
+
+	}
+
+	return current, nil
+}
+
+func (p *Parser) ParsePipeExp(position int) (*ParseResult[Exp], error) {
+
+	current, _ := p.ParseFunctionCall(position)
+	shouldRun := true
+
+	for shouldRun {
+		pipeOp, err := p.ParsePipeOp(current.Position + 1)
+		if err != nil {
+			fmt.Println(err)
+			shouldRun = false
+			break
+		}
+
+		pipeExp, err := p.ParsePipeExp(pipeOp.Position + 1)
+		if err != nil {
+			shouldRun = false
+			break
+		}
+		current = NewParseResult[Exp](NewPipeOpExp(current.Result, pipeOp.Result, pipeExp.Result), pipeExp.Position)
 
 	}
 
@@ -399,7 +434,7 @@ func (p *Parser) parseFuncParams(position int) ([]Exp, int, error) {
 	return params, currentPos, nil
 }
 
-func (p *Parser) ParseFunctionCall(position int) (*ParseResult[*FunctionCallExp], error) {
+func (p *Parser) ParseFunctionCall(position int) (*ParseResult[Exp], error) {
 	funcNameTkn, _ := p.GetToken(position)
 	funcName := ""
 	if castFuncNameTkn, ok := funcNameTkn.(*token.VariableToken); ok {
@@ -412,7 +447,7 @@ func (p *Parser) ParseFunctionCall(position int) (*ParseResult[*FunctionCallExp]
 
 	p.AssertTokenIsHere(position, &token.RightParenToken{})
 
-	return NewParseResult(NewFunctionCallExp(NewFunctionName(funcName), params), position), nil
+	return NewParseResult[Exp](NewFunctionCallExp(NewFunctionName(funcName), params), position), nil
 }
 
 /* func (p *Parser) ParseHigherOrderFunctionDef (position int) (*ParseResult[*HigherOrderFunctionDef], error) {

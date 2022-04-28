@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/vSterlin/goscript/parser"
 	"github.com/vSterlin/goscript/token"
 )
 
@@ -61,7 +62,7 @@ func main() {
 
 	// fmt.Printf("parseRes.Equals(expected): %v\n", parseRes.Equals(expected))
 
-	tokenizer := token.NewTokenizer("test(1,2)")
+	tokenizer := token.NewTokenizer("foo()|> abc() |> def()")
 
 	tokens := tokenizer.Tokenize()
 
@@ -69,9 +70,11 @@ func main() {
 		fmt.Printf("%d: %#v\n", i, t)
 	}
 
-	// p := parser.NewParser(tokens)
+	p := parser.NewParser(tokens)
 
-	// parseResult, _ := p.ParseFunctionCall(0)
+	parseResult, _ := p.ParsePipeExp(0)
+
+	fmt.Printf("parseResult: %#v\n", parseResult.Result)
 
 	// expected := parser.NewParseResult(parser.NewFunctionCallExp(parser.NewFunctionName("test"), []parser.Exp{&parser.IntLiteralExp{1}, &parser.IntLiteralExp{2}}), 5)
 
@@ -81,4 +84,5 @@ func main() {
 	// 	fmt.Printf("result: %#v\n", parseResult.Result.FunctionName.Equals(expected.Result.FunctionName))
 
 	// }
+
 }
