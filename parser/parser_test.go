@@ -253,39 +253,39 @@ func TestAndOpExp(t *testing.T) {
 	}
 } */
 
-func TestPipeOperatorOpExp(t *testing.T) {
-	first := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{1})
-	second := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{1})
-	third := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{2})
+// func TestPipeOperatorOpExp(t *testing.T) {
+// 	first := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{1})
+// 	second := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{1})
+// 	third := NewOpExp(&IntLiteralExp{1}, &PipeOp{}, &IntLiteralExp{2})
 
-	fmt.Printf("%#v, %#v", first, second)
-	if !first.Equals(second) {
-		t.Error("Expected first and second operator expression to be equal")
-	}
-	if !first.Equals(first) {
-		t.Error("Expected first operator expression to be equal to itself")
-	}
-	if first.Equals(third) {
-		t.Error("Expected first operator expression not to be equal to third")
-	}
+// 	fmt.Printf("%#v, %#v", first, second)
+// 	if !first.Equals(second) {
+// 		t.Error("Expected first and second operator expression to be equal")
+// 	}
+// 	if !first.Equals(first) {
+// 		t.Error("Expected first operator expression to be equal to itself")
+// 	}
+// 	if first.Equals(third) {
+// 		t.Error("Expected first operator expression not to be equal to third")
+// 	}
 
-}
+// }
 
-func TestPipeOperatorOpPipeOp(t *testing.T) {
+// func TestPipeOperatorOpPipeOp(t *testing.T) {
 
-	tokens := []token.Token{&token.PipeOperatorToken{}}
-	parser := NewParser(tokens)
-	parseResult, err := parser.ParseAdditiveOp(0)
-	if err != nil {
-		t.Error("Unexpected parser error")
-	}
+// 	tokens := []token.Token{&token.PipeOperatorToken{}}
+// 	parser := NewParser(tokens)
+// 	parseResult, err := parser.ParseAdditiveOp(0)
+// 	if err != nil {
+// 		t.Error("Unexpected parser error")
+// 	}
 
-	if !parseResult.Equals(NewParseResult[Operator](&PipeOp{}, 1)) {
-		t.Error("Expected parse result did not equal actual")
+// 	if !parseResult.Equals(NewParseResult[Operator](&PipeOp{}, 1)) {
+// 		t.Error("Expected parse result did not equal actual")
 
-	}
+// 	}
 
-}
+// }
 func TestEqualsOp(t *testing.T) {
 	first := NewOpExp(&IntLiteralExp{1}, &EqualsOp{}, &IntLiteralExp{1})
 	second := NewOpExp(&IntLiteralExp{1}, &EqualsOp{}, &IntLiteralExp{1})
