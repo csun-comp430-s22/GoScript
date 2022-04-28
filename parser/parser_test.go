@@ -756,6 +756,18 @@ func TestFuncCallWith2Params(t *testing.T) {
 
 }
 
+func TestPipeOpExp(t *testing.T) {
+	tokens := tokenize("test() |> abc()")
+
+	parser := NewParser(tokens)
+
+	parseResult, err := parser.ParsePipeExp(0)
+	if parseResult == nil || err != nil {
+		t.Fatalf("program did not parse")
+	}
+
+}
+
 func TestProgram(t *testing.T) {
 	tokens := tokenize(`
 		fn int funcName(x int){}
