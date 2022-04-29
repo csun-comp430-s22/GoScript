@@ -14,7 +14,8 @@ func NewFunctionCallExp(functionName *FunctionName, params []Exp) *FunctionCallE
 }
 
 func (FCE *FunctionCallExp) Equals(other interface{}) bool {
-	if reflect.TypeOf(other) != reflect.TypeOf(FCE) {
+
+	if reflect.TypeOf(other) == reflect.TypeOf(FCE) {
 		castOther := reflect.ValueOf(other)
 		asFunction, ok := reflect.Indirect(castOther).Interface().(FunctionCallExp)
 		for i, param := range FCE.Params {

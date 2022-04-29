@@ -57,7 +57,7 @@ func (p *Parser) ParsePrimaryExp(position int) (*ParseResult[Exp], error) {
 func (p *Parser) ParsePipeOp(position int) (*ParseResult[*PipeOp], error) {
 	tkn, _ := p.GetToken(position)
 
-	fmt.Printf("tkn: %#v\n", tkn)
+	// fmt.Printf("tkn: %#v\n", tkn)
 	if _, ok := tkn.(*token.PipeOperatorToken); ok {
 		return NewParseResult(&PipeOp{}, position), nil
 	} else {
@@ -196,7 +196,7 @@ func (p *Parser) ParsePipeExp(position int) (*ParseResult[Exp], error) {
 	for shouldRun {
 		pipeOp, err := p.ParsePipeOp(current.Position + 1)
 		if err != nil {
-			fmt.Println(err)
+			// fmt.Println(err)
 			shouldRun = false
 			break
 		}
@@ -211,6 +211,62 @@ func (p *Parser) ParsePipeExp(position int) (*ParseResult[Exp], error) {
 	}
 
 	return current, nil
+}
+
+func (p *Parser) RewritePipeExp(exp Exp) Exp {
+
+	shouldRun := true
+	pipeExp, _ := exp.(*PipeOpExp)
+
+	funcs := []Exp{pipeExp.Left}
+
+	var current Exp = pipeExp
+
+	//  add all functions in pipe to slice
+	for shouldRun {
+		current = pipeExp.Right
+		if pipeExp, ok := current.(*PipeOpExp); ok {
+			funcs = append(funcs, pipeExp.Left)
+		} else {
+			funcs = append(funcs, current)
+			shouldRun = false
+			break
+		}
+	}
+
+	funcCallExp := funcs[len(funcs)-1]
+	currentFunc, _ := funcCallExp.(*FunctionCallExp)
+	// assemble into function call exp's in reverse order
+	for i := len(funcs) - 1; i >= 0; i-- {
+		casted, _ := funcs[i].(*FunctionCallExp)
+		currentFunc.Params = []Exp{casted}
+		current = casted
+	}
+
+	return funcCallExp
+
+	// fmt.Printf("exp: %#v\n", exp)
+
+	// if pipeExp, ok := exp.(*PipeOpExp); ok {
+	// 	left, right := pipeExp.Left, pipeExp.Right
+
+	// 	leftFn, _ := left.(*FunctionCallExp)
+	// 	rightFn, _ := right.(*FunctionCallExp)
+
+	// 	return NewFunctionCallExp(rightFn.FunctionName,[]Exp{})
+	// }
+
+	// // base case
+	// if _, ok := exp.(*FunctionCallExp); ok {
+
+	// 	return exp
+	// } else {
+	// 	pipeExp, _ := exp.(*PipeOpExp)
+	// 	fmt.Printf("pipeExp: %#v\n", exp)
+	// 	fn, _ := pipeExp.Left.(*FunctionCallExp)
+	// 	return NewFunctionCallExp(fn.FunctionName, []Exp{p.RewritePipeExp(pipeExp.Right)})
+	// }
+
 }
 
 func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
@@ -403,7 +459,7 @@ func (p *Parser) ParseProgram() (*Program, error) {
 	if program.Position == len(p.Tokens)-1 {
 		return program.Result, nil
 	} else {
-		fmt.Printf("program.Position: %v\n", program.Position)
+		// fmt.Printf("program.Position: %v\n", program.Position)
 		panic("Remaining tokens at end")
 	}
 }

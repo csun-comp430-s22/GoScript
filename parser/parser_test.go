@@ -781,6 +781,42 @@ func TestProgram(t *testing.T) {
 
 }
 
+func TestFuncNameEquals(t *testing.T) {
+	if !NewFunctionName("bar").Equals(NewFunctionName("bar")) {
+		t.Errorf("function names are not equal")
+	}
+}
+
+func TestFuncCallEquals(t *testing.T) {
+	if !NewFunctionCallExp(NewFunctionName("bar"), []Exp{}).Equals(NewFunctionCallExp(NewFunctionName("bar"), []Exp{})) {
+		t.Errorf("function names are not equal")
+	}
+}
+
+func TestPipeRewrite(t *testing.T) {
+
+	tokensPipe := tokenize(`bar() |> foo()`)
+
+	parserPipe := NewParser(tokensPipe)
+
+	parsePipeRes, _ := parserPipe.ParsePipeExp(0)
+
+	expPipe := parsePipeRes.Result
+
+	noPipeExp := parserPipe.RewritePipeExp(expPipe)
+
+	expected := NewFunctionCallExp(NewFunctionName("foo"), []Exp{NewFunctionCallExp(NewFunctionName("bar"), []Exp{})})
+	if !noPipeExp.Equals(expected) {
+
+		fmt.Printf("expected: %#v\n", expected.Params)
+
+		fc, _ := noPipeExp.(*FunctionCallExp)
+		fmt.Printf("noPipeExp: %#v\n", fc.Params)
+		t.Errorf("expected expressions to be equal")
+	}
+
+}
+
 // func TestFunctionDefinitionStmt(t *testing.T) {
 
 // 	tokens := tokenize("fn")

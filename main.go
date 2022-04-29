@@ -62,7 +62,7 @@ func main() {
 
 	// fmt.Printf("parseRes.Equals(expected): %v\n", parseRes.Equals(expected))
 
-	tokenizer := token.NewTokenizer("foo()|> abc() |> def()")
+	tokenizer := token.NewTokenizer("foo()|> abc()")
 
 	tokens := tokenizer.Tokenize()
 
@@ -74,7 +74,10 @@ func main() {
 
 	parseResult, _ := p.ParsePipeExp(0)
 
-	fmt.Printf("parseResult: %#v\n", parseResult.Result)
+	newExp := p.RewritePipeExp(parseResult.Result)
+
+	fmt.Printf("newExp: %#v\n", newExp)
+	// fmt.Printf("parseResult: %#v\n", parseResult.Result)
 
 	// expected := parser.NewParseResult(parser.NewFunctionCallExp(parser.NewFunctionName("test"), []parser.Exp{&parser.IntLiteralExp{1}, &parser.IntLiteralExp{2}}), 5)
 
