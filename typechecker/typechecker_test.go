@@ -135,3 +135,59 @@ func TestFunctionCallExpType(t *testing.T) {
 	}
 
 }
+
+func TestFunctionCallExpWithArgsType(t *testing.T) {
+
+	funcName := parser.NewFunctionName("test")
+	funcArgs := []*parser.Vardec{parser.NewVardec(parser.NewVariable("a"), &parser.IntType{})}
+	funcDef := parser.NewFunctionDef(funcName, funcArgs, parser.NewBlockStmt([]parser.Stmt{}), &parser.IntType{})
+
+	funcCallExp := parser.NewFunctionCallExp(funcName, []parser.Exp{&parser.IntLiteralExp{Number: 1}})
+
+	typechecker := NewTypechecker(*parser.NewProgram([]*parser.FunctionDef{funcDef}))
+
+	actualType, _ := typechecker.TypeOf(funcCallExp, TypeEnvironment{})
+	expectedType := &parser.IntType{}
+
+	if !actualType.Equals(expectedType) {
+		t.Errorf("types mismatch: %#v type does not equal %#v type", actualType, expectedType)
+	}
+
+}
+
+func TestFunctionCallExpWithArgsMismatch(t *testing.T) {
+
+	funcName := parser.NewFunctionName("test")
+	funcArgs := []*parser.Vardec{parser.NewVardec(parser.NewVariable("a"), &parser.IntType{})}
+	funcDef := parser.NewFunctionDef(funcName, funcArgs, parser.NewBlockStmt([]parser.Stmt{}), &parser.BoolType{})
+
+	funcCallExp := parser.NewFunctionCallExp(funcName, []parser.Exp{&parser.IntLiteralExp{Number: 1}})
+
+	typechecker := NewTypechecker(*parser.NewProgram([]*parser.FunctionDef{funcDef}))
+
+	actualType, _ := typechecker.TypeOf(funcCallExp, TypeEnvironment{})
+	expectedType := &parser.IntType{}
+
+	if actualType.Equals(expectedType) {
+		t.Errorf("types were found to be equal: %#v type should not match %#v type", actualType, expectedType)
+	}
+
+}
+
+type unsupportedOp struct{}
+
+func (uo *unsupportedOp) Equals(other any) bool {
+	return false
+}
+
+func TestUnsupportedOperation(t *testing.T) {
+
+	logicalOpExp := parser.NewOpExp(&parser.BoolLiteralExp{Value: true}, &unsupportedOp{}, &parser.BoolLiteralExp{Value: false})
+
+	_, err := typeOf(logicalOpExp)
+
+	if err == nil {
+		t.Errorf("expected error to notify about unusupported operator")
+	}
+
+}
