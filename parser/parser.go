@@ -279,17 +279,27 @@ func (p *Parser) ParseStmt(position int) (*ParseResult[Stmt], error) {
 	// fmt.Printf("tkn: %v\n", tkn)
 
 	// position will be moved inside the parser function to next or next after usually
-	if _, ok := tkn.(*token.IfToken); ok {
+
+	switch tkn.(type) {
+
+	case *token.IfToken:
 		return p.parseSelectionStmt(position)
-	} else if _, ok := tkn.(*token.LeftCurlyToken); ok {
+	case *token.LeftCurlyToken:
 		return p.parseBlockStmt(position)
-	} else if _, ok := tkn.(*token.FnToken); ok {
+	case *token.FnToken:
 		res, err := p.ParseFunctionDefinition(position)
 		// this was done cause p.ParseFunctionDefinition(position) returns *ParseResult[*FunctionDef]
 		// instead of *ParseResult[Stmt]
 		return NewParseResult[Stmt](res.Result, res.Position), err
-	} else {
+
+	case *token.VarToken:
+		return p.ParseVarInitStatement(position, true)
+	case *token.ConstToken:
+		return p.ParseVarInitStatement(position, false)
+
+	default:
 		return nil, NewParserError("expected statement, received: " + tkn.String())
+
 	}
 }
 
@@ -360,7 +370,8 @@ func (p *Parser) parseFuncArgs(position int) ([]*Vardec, int, error) {
 			if err != nil {
 				return nil, currentPos, NewParserError(err.Error())
 			}
-			varDec := NewVardec(&Variable{Name: varTkn.Name}, varType.Result)
+
+			varDec := NewVardec(NewVariable(varTkn.Name, false), varType.Result)
 			varDecs = append(varDecs, varDec)
 			currentPos += 2
 
@@ -416,12 +427,27 @@ func (p *Parser) ParseFunctionDefinition(position int) (*ParseResult[*FunctionDe
 	return NewParseResult(NewFunctionDef(NewFunctionName(funcName), args, stmtRes.Result, returnTypeRes.Result), stmtRes.Position), nil
 }
 
-// // Old
-// func (p *Parser) parseProgram(position int) (*ParseResult[*Program], error) {
-// 	stmt, _ := p.ParseStmt(position)
+func (p *Parser) ParseVarInitStatement(position int, mutable bool) (*ParseResult[Stmt], error) {
 
-// 	return NewParseResult(NewProgram(stmt.Result), stmt.Position), nil
-// }
+	varTypeRes, err := p.parseType(position + 1)
+	if err != nil {
+		return nil, NewParserError("expected type here")
+	}
+
+	varNameTkn, _ := p.GetToken(varTypeRes.Position)
+
+	varName := ""
+	if castVarNameTkn, ok := varNameTkn.(*token.VariableToken); ok {
+		varName = castVarNameTkn.Name
+	}
+
+	exp, err := p.ParsePipeExp(varTypeRes.Position)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return NewParseResult[Stmt](NewVardecStmt(NewVardec(NewVariable(varName, mutable), varTypeRes.Result), exp.Result), exp.Position), nil
+}
 
 func (p *Parser) parseProgram(position int) (*ParseResult[*Program], error) {
 

@@ -5,11 +5,11 @@ import (
 )
 
 type VardecStmt struct {
-	Vardec Vardec
+	Vardec *Vardec
 	Exp    Exp
 }
 
-func NewVardecStmt(vardec Vardec, exp Exp) *VardecStmt {
+func NewVardecStmt(vardec *Vardec, exp Exp) *VardecStmt {
 	return &VardecStmt{Vardec: vardec, Exp: exp}
 }
 
@@ -21,3 +21,5 @@ func (VS *VardecStmt) Equals(other interface{}) bool {
 	}
 	return false
 }
+
+func (vs *VardecStmt) stmt() {}

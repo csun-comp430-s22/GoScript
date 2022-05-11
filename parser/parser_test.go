@@ -708,7 +708,7 @@ func TestFuncDef(t *testing.T) {
 	parser := NewParser(tokens)
 	expected := NewParseResult(NewFunctionDef(
 		NewFunctionName("test"),
-		[]*Vardec{NewVardec(NewVariable("x"), &IntType{})},
+		[]*Vardec{NewVardec(NewVariable("x", false), &IntType{})},
 		NewBlockStmt([]Stmt{}),
 		&IntType{},
 	), len(tokens)-1)

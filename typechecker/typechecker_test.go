@@ -35,7 +35,7 @@ func TestTypecheckBool(t *testing.T) {
 func TestVariableIsInteger(t *testing.T) {
 	typechecker := NewTypechecker(*parser.NewProgram([]*parser.FunctionDef{}))
 
-	intVar := parser.NewVardec(parser.NewVariable("test"), &parser.IntType{})
+	intVar := parser.NewVardec(parser.NewVariable("test", false), &parser.IntType{})
 
 	typeEnv := TypeEnvironment{*intVar.Variable: &parser.IntType{}}
 
@@ -51,7 +51,7 @@ func TestVariableIsInteger(t *testing.T) {
 func TestVariableOutOfScope(t *testing.T) {
 	typechecker := NewTypechecker(*parser.NewProgram([]*parser.FunctionDef{}))
 
-	intVar := parser.NewVardec(parser.NewVariable("test"), &parser.IntType{})
+	intVar := parser.NewVardec(parser.NewVariable("test", false), &parser.IntType{})
 
 	typeEnv := TypeEnvironment{}
 
@@ -139,7 +139,7 @@ func TestFunctionCallExpType(t *testing.T) {
 func TestFunctionCallExpWithArgsType(t *testing.T) {
 
 	funcName := parser.NewFunctionName("test")
-	funcArgs := []*parser.Vardec{parser.NewVardec(parser.NewVariable("a"), &parser.IntType{})}
+	funcArgs := []*parser.Vardec{parser.NewVardec(parser.NewVariable("a", false), &parser.IntType{})}
 	funcDef := parser.NewFunctionDef(funcName, funcArgs, parser.NewBlockStmt([]parser.Stmt{}), &parser.IntType{})
 
 	funcCallExp := parser.NewFunctionCallExp(funcName, []parser.Exp{&parser.IntLiteralExp{Number: 1}})
@@ -158,7 +158,7 @@ func TestFunctionCallExpWithArgsType(t *testing.T) {
 func TestFunctionCallExpWithArgsMismatch(t *testing.T) {
 
 	funcName := parser.NewFunctionName("test")
-	funcArgs := []*parser.Vardec{parser.NewVardec(parser.NewVariable("a"), &parser.IntType{})}
+	funcArgs := []*parser.Vardec{parser.NewVardec(parser.NewVariable("a", false), &parser.IntType{})}
 	funcDef := parser.NewFunctionDef(funcName, funcArgs, parser.NewBlockStmt([]parser.Stmt{}), &parser.BoolType{})
 
 	funcCallExp := parser.NewFunctionCallExp(funcName, []parser.Exp{&parser.IntLiteralExp{Number: 1}})

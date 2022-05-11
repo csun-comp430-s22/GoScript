@@ -9,11 +9,23 @@ import (
 type TypeEnvironment map[parser.Variable]parser.Type
 
 type Typechecker struct {
-	Functions []*parser.FunctionDef
+	Program   parser.Program
+	Functions map[*parser.FunctionName]*parser.FunctionDef
 }
 
 func NewTypechecker(program parser.Program) *Typechecker {
-	return &Typechecker{Functions: program.FuncDefs}
+	t := &Typechecker{Program: program}
+
+	funcs := map[*parser.FunctionName]*parser.FunctionDef{}
+	for _, fDef := range program.FuncDefs {
+		_, exists := funcs[fDef.Name]
+		if exists {
+			panic("Function with duplicate name: " + fDef.Name.Name)
+		}
+		funcs[fDef.Name] = fDef
+	}
+	t.Functions = funcs
+	return t
 }
 
 // // rewritten below with nicer syntax
@@ -65,8 +77,10 @@ func (t *Typechecker) TypeOf(exp parser.Exp, typeEnv TypeEnvironment) (parser.Ty
 
 	case (*parser.FunctionCallExp):
 		return t.TypeOfFuncCallExp(*castExp, typeEnv)
+
+	default:
+		return nil, NewTypecheckerError("typechecker err")
 	}
-	return nil, NewTypecheckerError("typechecker err")
 }
 
 func (t *Typechecker) TypeOfOpExp(exp parser.OperatorExp, typeEnv TypeEnvironment) (parser.Type, error) {
@@ -147,13 +161,13 @@ func tryTypeofLogicalExp(exp parser.OperatorExp) parser.Type {
 }
 
 func (t *Typechecker) GetFunctionByName(funcName *parser.FunctionName) (*parser.FunctionDef, error) {
-	for _, fDef := range t.Functions {
-		if fDef.Name.Equals(funcName) {
-			return fDef, nil
-		}
+
+	fDef, exists := t.Functions[funcName]
+	if !exists {
+		return nil, NewTypecheckerError("No function with name: " + funcName.Name)
 	}
 
-	return nil, NewTypecheckerError("No function with name: " + funcName.Name)
+	return fDef, nil
 }
 
 func (t *Typechecker) TypeOfFuncCallExp(exp parser.FunctionCallExp, typeEnv TypeEnvironment) (parser.Type, error) {
@@ -181,3 +195,7 @@ func (t *Typechecker) TypeOfFuncCallExp(exp parser.FunctionCallExp, typeEnv Type
 	return fDef.ReturnType, nil
 
 }
+
+// func (t *Typechecker) TypecheckStmt(stmt parser.Stmt, typeEnv TypeEnvironment) (TypeEnvironment, error) {
+
+// }
