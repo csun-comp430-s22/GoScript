@@ -97,3 +97,41 @@ func TestComparisonOpExp(t *testing.T) {
 		}
 	}
 }
+
+func TestLogicalOpExp(t *testing.T) {
+
+	logicalOps := []parser.Type{
+		&parser.AndOp{},
+		&parser.OrOp{},
+		&parser.NegateOp{},
+	}
+
+	for _, logicalOp := range logicalOps {
+		logicalOpExp := parser.NewOpExp(&parser.BoolLiteralExp{Value: true}, logicalOp, &parser.BoolLiteralExp{Value: false})
+
+		actualType, _ := typeOf(logicalOpExp)
+		expectedType := &parser.BoolType{}
+
+		if !actualType.Equals(expectedType) {
+			t.Errorf("types mismatch: %#v type does not equal %#v type", actualType, expectedType)
+		}
+	}
+}
+
+func TestFunctionCallExpType(t *testing.T) {
+
+	funcName := parser.NewFunctionName("test")
+	funcDef := parser.NewFunctionDef(funcName, []*parser.Vardec{}, parser.NewBlockStmt([]parser.Stmt{}), &parser.IntType{})
+
+	funcCallExp := parser.NewFunctionCallExp(funcName, []parser.Exp{})
+
+	typechecker := NewTypechecker(*parser.NewProgram([]*parser.FunctionDef{funcDef}))
+
+	actualType, _ := typechecker.TypeOf(funcCallExp, TypeEnvironment{})
+	expectedType := &parser.IntType{}
+
+	if !actualType.Equals(expectedType) {
+		t.Errorf("types mismatch: %#v type does not equal %#v type", actualType, expectedType)
+	}
+
+}
