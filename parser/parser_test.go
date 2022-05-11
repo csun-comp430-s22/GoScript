@@ -706,7 +706,7 @@ func TestIfElseStmt(t *testing.T) {
 func TestFuncDef(t *testing.T) {
 	tokens := tokenize("fn int test(x int){}")
 	parser := NewParser(tokens)
-	expected := NewParseResult(NewFunctionDef(
+	expected := NewParseResult[Stmt](NewFunctionDef(
 		NewFunctionName("test"),
 		[]*Vardec{NewVardec(NewVariable("x", false), &IntType{})},
 		NewBlockStmt([]Stmt{}),
@@ -817,18 +817,23 @@ func TestPipeRewrite(t *testing.T) {
 
 }
 
-// func TestFunctionDefinitionStmt(t *testing.T) {
+func TestFunctionDefinitionStmt(t *testing.T) {
 
-// 	tokens := tokenize("fn")
+	tokens := tokenize("fn int test(){}")
 
-// 	parser := NewParser(tokens)
-// 	parseResult, _ := parser.parseFunctionDefinition(0)
-// 	t.Logf("%#v", parseResult)
+	parser := NewParser(tokens)
+	parseResult, _ := parser.ParseFunctionDefinition(0)
 
-// 	expected := NewParseResult[Stmt](NewFunctionDef(*NewFunctionName("lol"),
-// 		[]Vardec{{Name: "abc"}},
-// 		NewBlockStmt([]Stmt{}),
-// 		&IntType{},
-// 	), 0)
+	expected := NewParseResult[Stmt](NewFunctionDef(NewFunctionName("test"),
+		[]*Vardec{},
+		NewBlockStmt([]Stmt{}),
+		&IntType{},
+	), 6)
 
-// }
+	if !parseResult.Equals(expected) {
+
+		t.Errorf("expected parse results to be equal")
+
+	}
+
+}

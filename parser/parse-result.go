@@ -2,8 +2,6 @@ package parser
 
 import (
 	"reflect"
-
-	"github.com/vSterlin/goscript/utils"
 )
 
 type ParseResult[T Node] struct {
@@ -17,12 +15,8 @@ func NewParseResult[T Node](result T, position int) *ParseResult[T] {
 
 func (pr *ParseResult[T]) Equals(other any) bool {
 
-	if utils.GenericTypeCompare(pr, other) {
-		// if reflect.TypeOf(other) == reflect.TypeOf(pr) {
-		castOther := reflect.ValueOf(other)
-		otherParseResult, ok := reflect.Indirect(castOther).Interface().(ParseResult[T])
-
-		return ok && pr.Result.Equals(otherParseResult.Result) && pr.Position == otherParseResult.Position
-	}
-	return false
+	// deep equals wont't work if generic type is not the same
+	// for example some ParseResult[Stmt] will not equal some ParseResult[FunctionDefinition]
+	// even though FunctionDefinition implements Stmt interface. Gotta take that into account
+	return reflect.DeepEqual(pr, other)
 }

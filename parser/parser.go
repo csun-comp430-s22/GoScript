@@ -393,7 +393,7 @@ func (p *Parser) parseFuncArgs(position int) ([]*Vardec, int, error) {
 	return varDecs, currentPos, nil
 }
 
-func (p *Parser) ParseFunctionDefinition(position int) (*ParseResult[*FunctionDef], error) {
+func (p *Parser) ParseFunctionDefinition(position int) (*ParseResult[Stmt], error) {
 	// fmt.Println("FUNCTION")
 
 	returnTypeRes, err := p.parseType(position + 1)
@@ -424,7 +424,7 @@ func (p *Parser) ParseFunctionDefinition(position int) (*ParseResult[*FunctionDe
 		return nil, err
 	}
 
-	return NewParseResult(NewFunctionDef(NewFunctionName(funcName), args, stmtRes.Result, returnTypeRes.Result), stmtRes.Position), nil
+	return NewParseResult[Stmt](NewFunctionDef(NewFunctionName(funcName), args, stmtRes.Result, returnTypeRes.Result), stmtRes.Position), nil
 }
 
 func (p *Parser) ParseVarInitStatement(position int, mutable bool) (*ParseResult[Stmt], error) {
@@ -461,7 +461,8 @@ func (p *Parser) parseProgram(position int) (*ParseResult[*Program], error) {
 			shouldRun = false
 			break
 		}
-		funcDefs = append(funcDefs, funcDef.Result)
+		castFuncDef, _ := funcDef.Result.(*FunctionDef)
+		funcDefs = append(funcDefs, castFuncDef)
 		currentPos = funcDef.Position
 
 		if currentPos == len(p.Tokens)-1 {
